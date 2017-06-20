@@ -22,14 +22,14 @@ export function fetchPublicationTopics() {
   }
 }
 
-export function fetchArticleTopics({ publication }) {
+export function fetchArticleTopics(publication) {
   return {
     type: FETCH_ARTICLE_TOPICS,
-    payload: fetchData(`/topics/auth${publication}`, publication)
+    payload: fetchData(`/topics/auth/${publication}`, publication)
   }
 }
 
-export function fetchArticleContent({ publication, article }) {
+export function fetchArticleContent(publication, article) {
   const fileName = `${publication}.${article}.md`
   return {
     type: FETCH_ARTICLE_CONTENT,

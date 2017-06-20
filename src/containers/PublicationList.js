@@ -9,16 +9,15 @@ import { fetchPublicationTopics } from '../actions/index'
 
 class PublicationList extends Component {
 
-
-  static propTypes: {
-    publicationTopics: PropTypes.object,
-    topics: PropTypes.array
+  static propTypes = {
+    topics: PropTypes.object,
+    fetchPublicationTopics: PropTypes.func,
+    history: PropTypes.object
   }
 
-  constructor(props) {
-    super(props)
-    this.onTouchTap = this.onTouchTap.bind(this)
-    this.topics = this.props.publicationTopics['index']
+  get topics() {
+    const { topics } = this.props
+    return topics['index']
   }
 
   componentWillMount() {
@@ -27,20 +26,20 @@ class PublicationList extends Component {
     }
   }
 
-  renderList() {
-    if (!this.topics) {
+  renderList(topics) {
+    if (!topics) {
       return null
     }
-    return this.topics.map(topic => (
+    return topics.map(topic => (
       <PublicationListItem
         key={topic._id}
         topic={topic}
-        onTouchTap={this.onTouchTap} />
+        onTouchTap={this.onTouchTap.bind(this)} />
     ))
   }
 
   render() {
-    this.topics = this.props.publicationTopics['index']
+   const topics = this.topics
     return (
       <div>
         <AppBar
@@ -49,7 +48,7 @@ class PublicationList extends Component {
           iconClassNameRight="muidocs-icon-navigation-expand-more"
         />
         <List>
-          {this.renderList()}
+          {this.renderList(topics)}
         </List>
       </div>
     )
@@ -62,7 +61,7 @@ class PublicationList extends Component {
 
 function mapStateToProps(state) {
   return {
-    publicationTopics: state.publicationTopics
+    topics: state.publicationTopics
   }
 }
 
