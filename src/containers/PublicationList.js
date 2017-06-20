@@ -1,3 +1,4 @@
+// @flow
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
@@ -9,12 +10,11 @@ import { fetchPublicationTopics } from '../actions/index'
 
 class PublicationList extends Component {
 
-  static propTypes = {
-    publicationTopics: PropTypes.object,
-    fetchPublicationTopics: PropTypes.func,
-    history: PropTypes.object
-  }
+  props: {
+    onTouchTap: function,
+    topics: Array<any>
 
+  }
   constructor(props) {
     super(props)
     this.onTouchTap = this.onTouchTap.bind(this)
