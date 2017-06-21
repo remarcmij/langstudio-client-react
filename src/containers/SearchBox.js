@@ -1,42 +1,38 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import AutoComplete from 'material-ui/AutoComplete'
-import { connect } from 'react-redux'
+import MenuItem from 'material-ui/MenuItem'
 import debounce from 'lodash.debounce'
+import axios from 'axios'
 
-import { fetchAutoCompleteItems } from '../actions/index'
+import config from '../config/config'
 
-class SearchBox extends Component {
+export default class SearchBox extends Component {
 
   static propTypes = {
-    autoCompleteItems: PropTypes.array,
-    fetchAutoCompleteItems: PropTypes.func
+    onItemSelected: PropTypes.func
   }
 
   constructor(props) {
     super(props)
 
     this.state = {
-      dataSource: [],
-      term: ''
+      dataSource: []
     }
 
     this.onUpdateInput = debounce(this.onUpdateInput, 250)
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   console.log('nextProps', nextProps)
-  //   this.setState({ dataSource: nextProps.autoCompleteItems })
-  // }
-
   render() {
-    console.log('render', this.props.autoCompleteItems)
+    // animated needs to be false for Chrome 56+
+    // see: https://developers.google.com/web/updates/2017/01/scrolling-intervention
     return (
       <div>
         <AutoComplete
           hintText="Search"
-          dataSource={this.props.autoCompleteItems}
-          dataSourceConfig={({ text: 'word', value: 'word' })}
+          animated={false}
+          filter={AutoComplete.noFilter}
+          dataSource={this.state.dataSource}
           onUpdateInput={this.onUpdateInput}
           onNewRequest={this.onNewRequest}
         />
@@ -44,34 +40,35 @@ class SearchBox extends Component {
     )
   }
 
-  performSearch() {
-    const term = this.state.term.trim()
-    if (term) {
-      this.props.fetchAutoCompleteItems(term)
+  performSearch(term) {
+    if (!term) {
+      return this.setState({ dataSource: [] })
     }
+
+    axios.get(`${config.apiEndPoint}/search/autocomplete?term=${term}`)
+      .then(res => {
+        const dataSource = res.data.map(item => ({
+          item,
+          text: item.word,
+          value: (
+            <MenuItem
+              primaryText={item.word}
+              secondaryText={item.lang}
+            />
+          )
+        }))
+        this.setState({ dataSource })
+      })
+      .catch(err => console.log(err))
   }
 
   onUpdateInput = (term) => {
-    this.setState({ term }, () => this.performSearch())
+    this.performSearch(term.trim())
   }
 
   onNewRequest = (chosenRequest, index) => {
-    console.log('state', this.state)
-    const { dataSource } = this.state
-    let item = null
-    if (dataSource.length) {
-      item = index === -1 ? dataSource[0] : dataSource[index]
-    }
-    console.log(item)
+    const { item } = index === -1 ? this.state.dataSource[0] : chosenRequest
+    this.props.onItemSelected(item)
   }
 
 }
-
-function mapStateToProps(state) {
-  return {
-    autoCompleteItems: state.autoCompleteItems,
-    fetchAutoCompleteItems: state.fetchAutoCompleteItems
-  }
-}
-
-export default connect(mapStateToProps, { fetchAutoCompleteItems })(SearchBox)

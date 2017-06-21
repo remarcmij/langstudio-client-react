@@ -26,7 +26,7 @@ class SearchPage extends Component {
             </IconButton>
           }
         >
-          <SearchBox />
+          <SearchBox onItemSelected={this.onItemSelected}/>
         </AppBar>
       </div>
     )
@@ -36,6 +36,9 @@ class SearchPage extends Component {
     this.props.history.goBack()
   }
 
+  onItemSelected = (item) => {
+    console.log(item)
+  }
 }
 
 export default SearchPage
