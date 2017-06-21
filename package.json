@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "axios": "^0.16.2",
+    "github-markdown-css": "^2.8.0",
+    "lodash.debounce": "^4.0.8",
     "lru-cache": "^4.1.1",
     "material-ui": "^0.18.3",
     "prop-types": "^15.5.10",

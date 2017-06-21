@@ -34,6 +34,7 @@ const ArticleContent = props => {
     <div className="Article">
       <Paper zDepth={2}>
         <article
+          className="markdown-body"
           dir={getDir()}
           onClick={onClick}
           dangerouslySetInnerHTML={{ __html: htmlText }}

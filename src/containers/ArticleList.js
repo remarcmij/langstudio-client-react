@@ -47,6 +47,11 @@ class ArticleList extends Component {
               <FontIcon className="material-icons">arrow_back</FontIcon>
             </IconButton>
           }
+          iconElementRight={
+            <IconButton onTouchTap={this.onSearchButtonTouchTap}>
+              <FontIcon className="material-icons">search</FontIcon>
+            </IconButton>
+          }
         />
         <List dir={this.getDir(topics)}>
           {this.renderList(topics)}
@@ -65,6 +70,10 @@ class ArticleList extends Component {
 
   onBackButtonTouchTap = () => {
     this.props.history.push('/')
+  }
+
+  onSearchButtonTouchTap = () => {
+    this.props.history.push(`/search`)
   }
 
   onArticleListItemTouchTap = (topic) => {

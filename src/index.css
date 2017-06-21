@@ -1,3 +1,5 @@
+@import "../node_modules/github-markdown-css/github-markdown.css";
+
 body {
     margin: 64px 0 0 0;
     padding: 0;

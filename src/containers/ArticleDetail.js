@@ -32,6 +32,12 @@ class ArticleDetail extends Component {
               <FontIcon className="material-icons">arrow_back</FontIcon>
             </IconButton>
           }
+          iconElementRight={
+            <IconButton onTouchTap={this.onSearchButtonTouchTap}>
+              <FontIcon className="material-icons">search</FontIcon>
+            </IconButton>
+          }
+
         />
         <ArticleContent article={this.props.article} />
       </div>
@@ -40,6 +46,10 @@ class ArticleDetail extends Component {
 
   onBackButtonTouchTap = () => {
     this.props.history.push(`/content/${this.props.match.params.publication}`)
+  }
+
+  onSearchButtonTouchTap = () => {
+    this.props.history.push(`/search`)
   }
 
 }

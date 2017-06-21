@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import AppBar from 'material-ui/AppBar'
+import IconButton from 'material-ui/IconButton'
+import FontIcon from 'material-ui/FontIcon'
 import { List } from 'material-ui/List'
 
 import PublicationListItem from '../components/PublicationListItem'
@@ -38,7 +40,11 @@ class PublicationList extends Component {
         <AppBar
           className="AppBar"
           title="TaalMap Indonesisch"
-          iconClassNameRight="muidocs-icon-navigation-expand-more"
+          iconElementRight={
+            <IconButton onTouchTap={this.onSearchButtonTouchTap}>
+              <FontIcon className="material-icons">search</FontIcon>
+            </IconButton>
+          }
         />
         <List>
           {this.renderList(topics)}
@@ -50,6 +56,11 @@ class PublicationList extends Component {
   onPublicationItemTouchTap = (topic) => {
     this.props.history.push(`/content/${topic.publication}`)
   }
+
+  onSearchButtonTouchTap = () => {
+    this.props.history.push(`/search`)
+  }
+
 }
 
 function mapStateToProps(state) {

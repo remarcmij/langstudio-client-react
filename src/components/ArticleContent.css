@@ -3,7 +3,6 @@
 }
 
 .Article article {
-    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif;
     font-size: 1rem;
     line-height: 1.5;
     color: #373a3c;
@@ -13,4 +12,8 @@
 .Article strong>span {
     cursor: pointer;
     color: #3F51B5;
+}
+
+.markdown-body {
+  font-family: Georgia, 'Times New Roman', Times, serif
 }

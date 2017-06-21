@@ -4,6 +4,7 @@ import LRU from 'lru-cache'
 export const FETCH_PUBLICATION_TOPICS = 'FETCH_PUBLICATION_TOPICS'
 export const FETCH_ARTICLE_TOPICS = 'FETCH_ARTICLE_TOPICS'
 export const FETCH_ARTICLE_CONTENT = 'FETCH_ARTICLE_CONTENT'
+export const FETCH_AUTOCOMPLETE_ITEMS = 'FETCH_AUTOCOMPLETE_ITEMS'
 
 const API_URL = 'http://localhost:9000/api'
 const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ODE0OGFhNjU3MjU4OTE1MDA1YzQyMDMiLCJpYXQiOjE0OTc1MTk0MTMsImV4cCI6MTUwMDExMTQxM30.Iq9lW7gK0GgNuDhlIs5eKPEO13aGYrhlJnONDskbjx0'
@@ -46,4 +47,12 @@ export function fetchArticleContent(publication, chapter) {
     type: FETCH_ARTICLE_CONTENT,
     payload: fetchData(`/article/auth/${fileName}`)
   }
+}
+
+export function fetchAutoCompleteItems(term) {
+  return {
+    type: FETCH_AUTOCOMPLETE_ITEMS,
+    payload: fetchData(`/search/autocomplete?term=${term}`)
+  }
+
 }
