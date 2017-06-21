@@ -1,0 +1,16 @@
+.Article {
+    padding: 8px;
+}
+
+.Article article {
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #373a3c;
+    padding: 16px;
+}
+
+.Article strong>span {
+    cursor: pointer;
+    color: #3F51B5;
+}

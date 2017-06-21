@@ -1,5 +1,22 @@
 body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+    margin: 64px 0 0 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #373a3c;
+    background-color: #fafafa;
+}
+
+.AppBar {
+    position: fixed !important;
+    top: 0
+}
+
+.layout-margin {
+  margin: 8px;
+}
+
+.layout-padding {
+  padding: 8px;
 }

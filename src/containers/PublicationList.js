@@ -10,20 +10,13 @@ import { fetchPublicationTopics } from '../actions/index'
 class PublicationList extends Component {
 
   static propTypes = {
-    topics: PropTypes.object,
+    topics: PropTypes.array,
     fetchPublicationTopics: PropTypes.func,
     history: PropTypes.object
   }
 
-  get topics() {
-    const { topics } = this.props
-    return topics['index']
-  }
-
-  componentWillMount() {
-    if (!this.topics) {
-      this.props.fetchPublicationTopics()
-    }
+  componentDidMount() {
+    this.props.fetchPublicationTopics()
   }
 
   renderList(topics) {
@@ -34,12 +27,12 @@ class PublicationList extends Component {
       <PublicationListItem
         key={topic._id}
         topic={topic}
-        onTouchTap={this.onTouchTap.bind(this)} />
+        onTouchTap={this.onPublicationItemTouchTap} />
     ))
   }
 
   render() {
-   const topics = this.topics
+    const { topics } = this.props
     return (
       <div>
         <AppBar
@@ -54,8 +47,8 @@ class PublicationList extends Component {
     )
   }
 
-  onTouchTap(topic) {
-    this.props.history.push(`/articles/${topic.publication}`)
+  onPublicationItemTouchTap = (topic) => {
+    this.props.history.push(`/content/${topic.publication}`)
   }
 }
 

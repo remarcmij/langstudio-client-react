@@ -12,23 +12,15 @@ import { fetchArticleTopics } from '../actions/index'
 class ArticleList extends Component {
 
   static propTypes = {
-    topics: PropTypes.object,
+    topics: PropTypes.array,
     fetchArticleTopics: PropTypes.func,
     match: PropTypes.object,
     history: PropTypes.object
   }
 
-  get topics() {
+  componentDidMount() {
     const { publication } = this.props.match.params
-    const { topics } = this.props
-    return topics[publication]
-  }
-
-  componentWillMount() {
-    if (!this.topics) {
-      const { publication } = this.props.match.params
-      this.props.fetchArticleTopics(publication)
-    }
+    this.props.fetchArticleTopics(publication)
   }
 
   renderList(topics) {
@@ -39,19 +31,19 @@ class ArticleList extends Component {
       <ArticleListItem
         key={topic._id}
         topic={topic}
-        onTouchTap={this.onTouchTap.bind(this)} />
+        onTouchTap={this.onArticleListItemTouchTap} />
     ))
   }
 
   render() {
-    const topics = this.topics
+    const { topics } = this.props
     return (
       <div>
         <AppBar
           className="AppBar"
           title={<span>Articles</span>}
           iconElementLeft={
-            <IconButton onTouchTap={this.onBack.bind(this)}>
+            <IconButton onTouchTap={this.onBackButtonTouchTap}>
               <FontIcon className="material-icons">arrow_back</FontIcon>
             </IconButton>
           }
@@ -63,14 +55,6 @@ class ArticleList extends Component {
     )
   }
 
-  onBack() {
-    this.props.history.push('/')
-  }
-
-  onTouchTap(topic) {
-    this.props.history.push(`/articles/${topic.publication}/${topic.article}`)
-  }
-
   getDir(topics) {
     if (!topics) {
       return 'ltr'
@@ -78,6 +62,15 @@ class ArticleList extends Component {
     const firstTopic = topics[0]
     return firstTopic.baseLang.startsWith('ar') || firstTopic.targetLang.startsWith('ar') ? 'rtl' : 'ltr'
   }
+
+  onBackButtonTouchTap = () => {
+    this.props.history.push('/')
+  }
+
+  onArticleListItemTouchTap = (topic) => {
+    this.props.history.push(`/content/${topic.publication}/${topic.chapter}`)
+  }
+
 }
 
 function mapStateToProps(state) {

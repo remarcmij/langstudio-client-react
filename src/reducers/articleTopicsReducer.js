@@ -1,9 +1,9 @@
 import { FETCH_ARTICLE_TOPICS } from '../actions/index'
 
-export default (state = {}, { type, payload }) => {
+export default (state = null, { type, payload }) => {
   switch (type) {
     case FETCH_ARTICLE_TOPICS:
-      return { ...state, ...payload }
+      return payload
     default:
       return state
   }

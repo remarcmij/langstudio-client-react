@@ -3,12 +3,12 @@ import { Route } from 'react-router-dom'
 
 import PublicationList from './containers/PublicationList'
 import ArticleList from './containers/ArticleList'
-// import Article from './containers/Article'
+import ArticleDetail from './containers/ArticleDetail'
 
 export default (
   <div>
     <Route exact path="/" component={PublicationList} />
-    <Route exact path="/articles/:publication" component={ArticleList} />
-    {/*<Route path="/articles/:publication/:article" component={Article} />*/}
+    <Route exact path="/content/:publication" component={ArticleList} />
+    <Route path="/content/:publication/:chapter" component={ArticleDetail} />
   </div>
 )
