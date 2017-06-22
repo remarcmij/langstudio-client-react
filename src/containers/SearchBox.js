@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import AutoComplete from 'material-ui/AutoComplete'
 import MenuItem from 'material-ui/MenuItem'
 
-import { fetchAutoCompleteItems } from '../actions/index'
+import { fetchAutoCompleteItems } from '../actions'
 
 class SearchBox extends Component {
 
@@ -58,10 +58,15 @@ class SearchBox extends Component {
   }
 
   onNewRequest = (chosenRequest, index) => {
-    const { item } = index === -1 ? this.state.dataSource[0] : chosenRequest
-    this.props.onItemSelected(item)
+    const { dataSource } = this.state
+    if (index === -1) {
+      if (dataSource.length > 0) {
+        this.props.onItemSelected(dataSource[0])
+      }
+    } else {
+      this.props.onItemSelected(chosenRequest)
+    }
   }
-
 }
 
 function mapStateToProps(state) {

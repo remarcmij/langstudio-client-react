@@ -1,4 +1,4 @@
-import { FETCH_ARTICLE_CONTENT } from '../actions/index'
+import { FETCH_ARTICLE_CONTENT } from '../actions'
 
 export default (state = null, { type, payload }) => {
   switch (type) {

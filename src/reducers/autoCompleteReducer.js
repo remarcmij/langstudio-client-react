@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs/Observable'
 
 import config from '../config/config'
-import { FETCH_AUTOCOMPLETE, FETCH_AUTOCOMPLETE_FULFILLED } from '../actions/index'
+import { FETCH_AUTOCOMPLETE, FETCH_AUTOCOMPLETE_FULFILLED } from '../actions'
 
 export default (state = [], { type, payload }) => {
   switch (type) {

@@ -7,7 +7,7 @@ import FontIcon from 'material-ui/FontIcon'
 import { List } from 'material-ui/List'
 
 import PublicationListItem from '../components/PublicationListItem'
-import { fetchPublicationTopics } from '../actions/index'
+import { fetchPublicationTopics } from '../actions'
 
 class PublicationList extends Component {
 

@@ -5,7 +5,7 @@ import AppBar from 'material-ui/AppBar'
 import IconButton from 'material-ui/IconButton'
 import FontIcon from 'material-ui/FontIcon'
 import ArticleContent from '../components/ArticleContent'
-import { fetchArticleContent } from '../actions/index'
+import { fetchArticleContent } from '../actions'
 
 class ArticleDetail extends Component {
 

@@ -1,4 +1,4 @@
-import { FETCH_PUBLICATION_TOPICS } from '../actions/index'
+import { FETCH_PUBLICATION_TOPICS } from '../actions'
 
 export default (state = null, { type, payload }) => {
   switch (type) {
