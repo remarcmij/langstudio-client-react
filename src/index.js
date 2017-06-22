@@ -5,15 +5,15 @@ import { Provider } from 'react-redux'
 import { createStore, applyMiddleware } from 'redux'
 import { createEpicMiddleware } from 'redux-observable'
 import ReduxPromise from 'redux-promise'
-import './rx-operators'
 import logger from 'redux-logger'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
-import speechService from './services/speechService'
-import './index.css'
+import './rx-operators'
 
+import './index.css'
 import {rootReducer, rootEpic } from './reducers'
 import routes from './routes'
+import speechService from './services/speechService'
 
 speechService.setup()
 
