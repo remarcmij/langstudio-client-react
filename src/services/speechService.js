@@ -6,7 +6,6 @@ class SpeechService {
     this.speechSynthesis = window['speechSynthesis']
     this.voices = []
     this.utterance = null
-    this.setup()
   }
 
   setup() {

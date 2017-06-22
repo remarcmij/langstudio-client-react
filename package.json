@@ -5,7 +5,6 @@
   "dependencies": {
     "axios": "^0.16.2",
     "github-markdown-css": "^2.8.0",
-    "lodash.debounce": "^4.0.8",
     "lru-cache": "^4.1.1",
     "material-ui": "^0.18.3",
     "prop-types": "^15.5.10",
@@ -16,7 +15,9 @@
     "react-tap-event-plugin": "^2.0.1",
     "redux": "^3.7.0",
     "redux-logger": "^3.0.6",
-    "redux-promise": "^0.5.3"
+    "redux-observable": "^0.14.1",
+    "redux-promise": "^0.5.3",
+    "rxjs": "^5.4.1"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",

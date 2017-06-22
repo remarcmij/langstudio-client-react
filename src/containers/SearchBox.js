@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import AutoComplete from 'material-ui/AutoComplete'
 import MenuItem from 'material-ui/MenuItem'
-import debounce from 'lodash.debounce'
-import axios from 'axios'
+
+import { Observable } from 'rxjs/Observable'
+import { Subject } from 'rxjs/Subject'
 
 import config from '../config/config'
 
@@ -13,6 +14,9 @@ export default class SearchBox extends Component {
     onItemSelected: PropTypes.func
   }
 
+  _autoCompleteSearch = new Subject()
+  _unsubscribe = new Subject()
+
   constructor(props) {
     super(props)
 
@@ -20,7 +24,30 @@ export default class SearchBox extends Component {
       dataSource: []
     }
 
-    this.onUpdateInput = debounce(this.onUpdateInput, 250)
+    this._autoCompleteSearch
+      .debounceTime(250)
+      .switchMap(term => Observable.ajax(`${config.apiEndPoint}/search/autocomplete?term=${term}`))
+      .map(res => res.response)
+      .takeUntil(this._unsubscribe)
+      .subscribe(data => {
+        const dataSource = data.map(item => ({
+          item,
+          text: item.word,
+          value: (
+            <MenuItem
+              primaryText={item.word}
+              secondaryText={item.lang}
+            />
+          )
+        }))
+        this.setState({ dataSource })
+      })
+
+  }
+
+  componentWillUnmount() {
+    this._unsubscribe.next()
+    this._unsubscribe.complete()
   }
 
   render() {
@@ -40,30 +67,12 @@ export default class SearchBox extends Component {
     )
   }
 
-  performSearch(term) {
+  onUpdateInput = (term) => {
+    term = term.trim()
     if (!term) {
       return this.setState({ dataSource: [] })
     }
-
-    axios.get(`${config.apiEndPoint}/search/autocomplete?term=${term}`)
-      .then(res => {
-        const dataSource = res.data.map(item => ({
-          item,
-          text: item.word,
-          value: (
-            <MenuItem
-              primaryText={item.word}
-              secondaryText={item.lang}
-            />
-          )
-        }))
-        this.setState({ dataSource })
-      })
-      .catch(err => console.log(err))
-  }
-
-  onUpdateInput = (term) => {
-    this.performSearch(term.trim())
+    this._autoCompleteSearch.next(term)
   }
 
   onNewRequest = (chosenRequest, index) => {
