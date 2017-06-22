@@ -1,53 +1,35 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 import AutoComplete from 'material-ui/AutoComplete'
 import MenuItem from 'material-ui/MenuItem'
 
-import { Observable } from 'rxjs/Observable'
-import { Subject } from 'rxjs/Subject'
+import { fetchAutoCompleteItems } from '../actions/index'
 
-import config from '../config/config'
-
-export default class SearchBox extends Component {
+class SearchBox extends Component {
 
   static propTypes = {
-    onItemSelected: PropTypes.func
+    onItemSelected: PropTypes.func,
+    fetchAutoCompleteItems: PropTypes.func,
+    items: PropTypes.array
   }
 
-  _autoCompleteSearch = new Subject()
-  _unsubscribe = new Subject()
-
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      dataSource: []
-    }
-
-    this._autoCompleteSearch
-      .debounceTime(250)
-      .switchMap(term => Observable.ajax(`${config.apiEndPoint}/search/autocomplete?term=${term}`))
-      .map(res => res.response)
-      .takeUntil(this._unsubscribe)
-      .subscribe(data => {
-        const dataSource = data.map(item => ({
-          item,
-          text: item.word,
-          value: (
-            <MenuItem
-              primaryText={item.word}
-              secondaryText={item.lang}
-            />
-          )
-        }))
-        this.setState({ dataSource })
-      })
-
+  state = {
+    dataSource: []
   }
 
-  componentWillUnmount() {
-    this._unsubscribe.next()
-    this._unsubscribe.complete()
+  componentWillReceiveProps(nextProps) {
+    const dataSource = nextProps.items.map(item => ({
+      item,
+      text: item.word,
+      value: (
+        <MenuItem
+          primaryText={item.word}
+          secondaryText={item.lang}
+        />
+      )
+    }))
+    this.setState({ dataSource })
   }
 
   render() {
@@ -72,7 +54,7 @@ export default class SearchBox extends Component {
     if (!term) {
       return this.setState({ dataSource: [] })
     }
-    this._autoCompleteSearch.next(term)
+    this.props.fetchAutoCompleteItems(term)
   }
 
   onNewRequest = (chosenRequest, index) => {
@@ -81,3 +63,12 @@ export default class SearchBox extends Component {
   }
 
 }
+
+function mapStateToProps(state) {
+  return {
+    items: state.autoCompleteItems,
+    fetchAutoCompleteItems: state.fetchAutoCompleteItems
+  }
+}
+
+export default connect(mapStateToProps, { fetchAutoCompleteItems })(SearchBox)
