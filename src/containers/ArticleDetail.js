@@ -5,13 +5,14 @@ import AppBar from 'material-ui/AppBar'
 import IconButton from 'material-ui/IconButton'
 import FontIcon from 'material-ui/FontIcon'
 import ArticleContent from '../components/ArticleContent'
-import { fetchArticleContent } from '../actions'
+import { fetchArticleContent, fetchArticleContentCancelled } from '../actions'
 
 class ArticleDetail extends Component {
 
   static propTypes = {
     article: PropTypes.object,
     fetchArticleContent: PropTypes.func,
+    fetchArticleContentCancelled: PropTypes.func,
     match: PropTypes.object,
     history: PropTypes.object
   }
@@ -19,6 +20,10 @@ class ArticleDetail extends Component {
   componentDidMount() {
     const { publication, chapter } = this.props.match.params
     this.props.fetchArticleContent(publication, chapter)
+  }
+
+  componentWillUnmount() {
+    this.props.fetchArticleContentCancelled()
   }
 
   render() {
@@ -60,4 +65,7 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, { fetchArticleContent })(ArticleDetail)
+export default connect(mapStateToProps, {
+  fetchArticleContent,
+  fetchArticleContentCancelled
+})(ArticleDetail)

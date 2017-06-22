@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "axios": "^0.16.2",
     "github-markdown-css": "^2.8.0",
     "lru-cache": "^4.1.1",
     "material-ui": "^0.18.3",

@@ -17,5 +17,5 @@ const fetchAutoCompleteFulfilled = payload => ({ type: FETCH_AUTOCOMPLETE_FULFIL
 export const fetchAutoCompleteEpic = action$ =>
   action$.ofType(FETCH_AUTOCOMPLETE)
     .debounceTime(250)
-    .switchMap(action => Observable.ajax(`${config.apiEndPoint}/search/autocomplete?term=${action.payload}`))
-    .map(res => fetchAutoCompleteFulfilled(res.response))
+    .switchMap(action => Observable.ajax(`${config.apiEndPoint}/search/autocomplete?term=${action.payload}`)
+      .map(res => fetchAutoCompleteFulfilled(res.response)))

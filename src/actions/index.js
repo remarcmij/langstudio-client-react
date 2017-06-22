@@ -1,51 +1,25 @@
-import axios from 'axios'
-import LRU from 'lru-cache'
-import config from '../config/config'
+export const FETCH_PUBLICATIONS = 'FETCH_PUBLICATIONS'
+export const FETCH_PUBLICATIONS_FULFILLED = 'FETCH_PUBLICATIONS_FULFILLED'
+export const FETCH_PUBLICATIONS_CANCELLED = 'FETCH_PUBLICATIONS_CANCELLED'
 
-export const FETCH_PUBLICATION_TOPICS = 'FETCH_PUBLICATION_TOPICS'
-export const FETCH_ARTICLE_TOPICS = 'FETCH_ARTICLE_TOPICS'
+export const FETCH_ARTICLES = 'FETCH_ARTICLES'
+export const FETCH_ARTICLES_FULFILLED = 'FETCH_ARTICLES_FULFILLED'
+export const FETCH_ARTICLES_CANCELLED = 'FETCH_ARTICLES_CANCELLED'
+
 export const FETCH_ARTICLE_CONTENT = 'FETCH_ARTICLE_CONTENT'
-export const FETCH_AUTOCOMPLETE_ITEMS = 'FETCH_AUTOCOMPLETE_ITEMS'
+export const FETCH_ARTICLE_CONTENT_FULFILLED = 'FETCH_ARTICLE_CONTENT_FULFILLED'
+export const FETCH_ARTICLE_CONTENT_CANCELLED = 'FETCH_ARTICLE_CONTENT_CANCELLED'
 
 export const FETCH_AUTOCOMPLETE = 'FETCH_AUTOCOMPLETE'
 export const FETCH_AUTOCOMPLETE_FULFILLED = 'FETCH_AUTOCOMPLETE_FULFILLED'
 
-const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ODE0OGFhNjU3MjU4OTE1MDA1YzQyMDMiLCJpYXQiOjE0OTc1MTk0MTMsImV4cCI6MTUwMDExMTQxM30.Iq9lW7gK0GgNuDhlIs5eKPEO13aGYrhlJnONDskbjx0'
+export const fetchPublications = () => ({ type: FETCH_PUBLICATIONS })
+export const fetchPublicationsCancelled = () => ({ type: FETCH_PUBLICATIONS_CANCELLED })
 
-const httpCache = LRU({ max: 100, maxAge: 1000 * 60 * 60 })
+export const fetchArticles = (publication) => ({ type: FETCH_ARTICLES, payload: { publication } })
+export const fetchArticlesCancelled = () => ({ type: FETCH_ARTICLES_CANCELLED })
 
-function fetchData(route) {
-  const url = config.apiEndPoint + route
-  const data = httpCache.get(url)
-  if (data) {
-    return Promise.resolve(data)
-  }
-  return axios({
-    url,
-    headers: { Authorization: 'Bearer ' + TOKEN }
-  }).then(res => {
-    const data = res.data
-    httpCache.set(url, data)
-    return data
-  })
-}
+export const fetchArticleContent = (publication, chapter) => ({ type: FETCH_ARTICLE_CONTENT, payload: { publication, chapter } })
+export const fetchArticleContentCancelled = () => ({ type: FETCH_ARTICLE_CONTENT_CANCELLED })
 
 export const fetchAutoCompleteItems = term => ({ type: FETCH_AUTOCOMPLETE, payload: term })
-
-export const fetchPublicationTopics = () => ({
-  type: FETCH_PUBLICATION_TOPICS,
-  payload: fetchData('/topics/auth')
-})
-
-export const fetchArticleTopics = (publication) => ({
-  type: FETCH_ARTICLE_TOPICS,
-  payload: fetchData(`/topics/auth/${publication}`)
-})
-
-export const fetchArticleContent = (publication, chapter) => {
-  const fileName = `${publication}.${chapter}.md`
-  return {
-    type: FETCH_ARTICLE_CONTENT,
-    payload: fetchData(`/article/auth/${fileName}`)
-  }
-}
