@@ -11,13 +11,13 @@ export const FETCH_ERROR = PREFIX + 'FETCH_ERROR'
 
 const cache = LRU({ max: 25, maxAge: 1000 * 60 * 60 })
 
-export const fetch = (publication, chapter) => ({ type: FETCH, payload: { publication, chapter } })
+export const fetch = (publication, chapter) => ({ type: FETCH, publication, chapter})
 export const fetchCancelled = () => ({ type: FETCH_CANCELLED })
 
 export const fetchArticleEpic = action$ =>
   action$.ofType(FETCH)
     .switchMap(action => {
-      const { publication, chapter } = action.payload
+      const { publication, chapter } = action
       const fileName = `${publication}.${chapter}.md`
       const actionOut = cache.get(fileName)
       if (actionOut) {
@@ -27,6 +27,6 @@ export const fetchArticleEpic = action$ =>
       return Observable.ajax(url)
         .map(res => ({ type: FETCH_FULFILLED, article: res.response }))
         .do(actionOut => cache.set(fileName, actionOut))
-        .catch(err => Observable.of({ type: FETCH_ERROR, error: err }))
+        .catch(error => Observable.of({ type: FETCH_ERROR, error }))
         .takeUntil(action$.ofType(FETCH_CANCELLED))
     })

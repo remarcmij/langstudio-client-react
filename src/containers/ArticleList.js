@@ -7,12 +7,15 @@ import FontIcon from 'material-ui/FontIcon'
 import { List } from 'material-ui/List'
 
 import ArticleListItem from '../components/ArticleListItem'
-import { fetch, fetchCancelled } from '../actions/articles'
+import { fetch, fetchCancelled } from '../actions/articleList'
+import * as selectors from '../selectors/articleList'
 
 class ArticleList extends Component {
 
   static propTypes = {
     articles: PropTypes.object,
+    error: PropTypes.object,
+    loading: PropTypes.bool,
     fetch: PropTypes.func,
     fetchCancelled: PropTypes.func,
     match: PropTypes.object,
@@ -20,14 +23,14 @@ class ArticleList extends Component {
   }
 
   get articles() {
+    const { articles } = this.props
     const { publication } = this.props.match.params
-    return this.props.articles[publication]
+    return articles[publication]
   }
 
   componentDidMount() {
-    const { publication } = this.props.match.params
-    const articles = this.articles
-    if (!articles) {
+    if (!this.articles) {
+      const { publication } = this.props.match.params
       this.props.fetch(publication)
     }
   }
@@ -37,6 +40,12 @@ class ArticleList extends Component {
   }
 
   renderList(articles) {
+    const { error } = this.props
+    if (error) {
+      return (
+        <p>Could not fetch data: {error.message}</p>
+      )
+    }
     if (!articles) {
       return null
     }
@@ -77,8 +86,8 @@ class ArticleList extends Component {
     if (!articles) {
       return 'ltr'
     }
-    const firstTopic = articles[0]
-    return firstTopic.baseLang.startsWith('ar') || firstTopic.targetLang.startsWith('ar') ? 'rtl' : 'ltr'
+    const first = articles[0]
+    return first.baseLang.startsWith('ar') || first.targetLang.startsWith('ar') ? 'rtl' : 'ltr'
   }
 
   onBackButtonTouchTap = () => {
@@ -95,8 +104,13 @@ class ArticleList extends Component {
 
 }
 
-function mapStateToProps({ articles }) {
-  return { articles }
+function mapStateToProps(state) {
+  return {
+    articles: selectors.getArticles(state),
+    publication: selectors.getPublication(state),
+    loading: selectors.getLoading(state),
+    error: selectors.getError(state)
+  }
 }
 
 export default connect(mapStateToProps, {

@@ -1,4 +1,4 @@
-import * as actions from '../actions/autoComplete'
+import * as actions from '../actions/autoCompleteList'
 
 export default (state = [], action) => {
   switch (action.type) {

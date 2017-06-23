@@ -1,12 +1,12 @@
 import { combineEpics } from 'redux-observable'
-import { fetchPublicationsEpic } from './publications'
-import { fetchArticlesEpic } from './articles'
+import { fetchPublicationListEpic } from './publicationList'
+import { fetchArticleListEpic } from './articleList'
 import { fetchArticleEpic } from './article'
-import { fetchAutoCompleteEpic } from './autoComplete'
+import { fetchAutoCompleteListEpic } from './autoCompleteList'
 
 export const rootEpic = combineEpics(
-  fetchPublicationsEpic,
-  fetchArticlesEpic,
+  fetchPublicationListEpic,
+  fetchArticleListEpic,
   fetchArticleEpic,
-  fetchAutoCompleteEpic
+  fetchAutoCompleteListEpic
 )

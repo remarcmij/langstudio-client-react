@@ -8,16 +8,28 @@ export const FETCH_FULFILLED = PREFIX + 'FETCH_FULFILLED'
 export const FETCH_CANCELLED = PREFIX + 'FETCH_CANCELLED'
 export const FETCH_ERROR = PREFIX + 'FETCH_ERROR'
 
-export const fetch = (publication) => ({ type: FETCH, payload: { publication } })
+export const fetch = (publication) => ({ type: FETCH, publication })
 export const fetchCancelled = () => ({ type: FETCH_CANCELLED })
 
-export const fetchArticlesEpic = action$ =>
+export const fetchArticleListEpic = action$ =>
   action$.ofType(FETCH)
     .switchMap(action => {
-      const { publication } = action.payload
+      const { publication } = action
       const url = `${config.apiEndPoint}/topics/${publication}?auth=${config.token}`
       return Observable.ajax(url)
-        .map(res => ({ type: FETCH_FULFILLED, articles: { [publication]: res.response } }))
-        .catch(err => Observable.of({ type: FETCH_ERROR, error: err }))
+        .map(res => fetchFulfilled(publication, res.response))
+        .catch(error => Observable.of(fetchError(publication, error)))
         .takeUntil(action$.ofType(FETCH_CANCELLED))
     })
+
+const fetchFulfilled = (publication, items) => ({
+  type: FETCH_FULFILLED,
+  publication,
+  items
+})
+
+const fetchError = (publication, error) => ({
+  type: FETCH_ERROR,
+  publication,
+  error
+})

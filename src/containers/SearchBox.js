@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import AutoComplete from 'material-ui/AutoComplete'
 import MenuItem from 'material-ui/MenuItem'
 
-import { fetch } from '../actions/autoComplete'
+import { fetch } from '../actions/autoCompleteList'
 
 class SearchBox extends Component {
 
@@ -71,7 +71,7 @@ class SearchBox extends Component {
 
 function mapStateToProps(state) {
   return {
-    items: state.autoCompleteItems,
+    items: state.autoCompleteList,
   }
 }
 

@@ -11,12 +11,22 @@ export const FETCH_ERROR = PREFIX + 'FETCH_ERROR'
 export const fetch = () => ({ type: FETCH })
 export const fetchCancelled = () => ({ type: FETCH_CANCELLED })
 
-export const fetchPublicationsEpic = action$ =>
+export const fetchPublicationListEpic = action$ =>
   action$.ofType(FETCH)
     .switchMap(() => {
       const url = `${config.apiEndPoint}/topics?auth=${config.token}`
       return Observable.ajax(url)
-        .map(res => ({ type: FETCH_FULFILLED, publications: res.response }))
-        .catch(err => Observable.of({ type: FETCH_ERROR, error: err }))
+        .map(res => fetchFulfilled(res.response))
+        .catch(error => Observable.of(fetchError(error)))
         .takeUntil(action$.ofType(FETCH_CANCELLED))
     })
+
+const fetchFulfilled = (list) => ({
+  type: FETCH_FULFILLED,
+  list,
+})
+
+const fetchError = (error) => ({
+  type: FETCH_ERROR,
+  error
+})

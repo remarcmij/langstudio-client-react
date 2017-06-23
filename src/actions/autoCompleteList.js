@@ -7,14 +7,14 @@ export const FETCH = PREFIX + 'FETCH'
 export const FETCH_FULFILLED = PREFIX + 'FETCH_FULFILLED'
 export const FETCH_ERROR = PREFIX + 'FETCH_ERROR'
 
-export const fetch = term => ({ type: FETCH, payload: term })
+export const fetch = term => ({ type: FETCH, term })
 
-export const fetchAutoCompleteEpic = action$ =>
+export const fetchAutoCompleteListEpic = action$ =>
   action$.ofType(FETCH)
     .debounceTime(250)
     .switchMap(action => {
-      const url = `${config.apiEndPoint}/search/autocomplete?term=${action.payload}`
+      const url = `${config.apiEndPoint}/search/autocomplete?term=${action.term}`
       return Observable.ajax(url)
         .map(res => ({ type: FETCH_FULFILLED, items: res.response }))
-        .catch(err => Observable.of({ type: FETCH_ERROR, error: err }))
+        .catch(error => Observable.of({ type: FETCH_ERROR, error }))
     })

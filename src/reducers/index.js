@@ -1,14 +1,14 @@
 import { combineReducers } from 'redux'
 
-import publications from './publicationsReducer'
-import articles from './articlesReducer'
-import article from './articleReducer'
-import autoCompleteItems from './autoCompleteReducer'
+import publicationList from './publicationList'
+import articleList from './articleList'
+import article from './article'
+import autoCompleteList from './autoCompleteList'
 
 export const rootReducer = combineReducers({
-  publications,
-  articles,
+  publicationList,
+  articleList,
   article,
-  autoCompleteItems
+  autoCompleteList
 })
 
