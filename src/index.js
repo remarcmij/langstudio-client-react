@@ -10,7 +10,8 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import './rx-addons'
 
 import './index.css'
-import {rootReducer, rootEpic } from './reducers'
+import { rootReducer } from './reducers'
+import { rootEpic } from './actions'
 import routes from './routes'
 import speechService from './services/speechService'
 

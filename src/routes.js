@@ -3,14 +3,14 @@ import { Route } from 'react-router-dom'
 
 import PublicationList from './containers/PublicationList'
 import ArticleList from './containers/ArticleList'
-import ArticleDetail from './containers/ArticleDetail'
+import Article from './containers/Article'
 import SearchPage from './containers/SearchPage'
 
 export default (
   <div>
     <Route exact path="/" component={PublicationList} />
     <Route exact path="/content/:publication" component={ArticleList} />
-    <Route path="/content/:publication/:chapter" component={ArticleDetail} />
+    <Route path="/content/:publication/:chapter" component={Article} />
     <Route path="/search" component={SearchPage} />
   </div>
 )

@@ -7,25 +7,25 @@ import FontIcon from 'material-ui/FontIcon'
 import { List } from 'material-ui/List'
 
 import PublicationListItem from '../components/PublicationListItem'
-import { fetchPublications, fetchPublicationsCancelled } from '../actions'
+import { fetch, fetchCancelled } from '../actions/publications'
 
 class PublicationList extends Component {
 
   static propTypes = {
     publications: PropTypes.array,
-    fetchPublications: PropTypes.func,
-    fetchPublicationsCancelled: PropTypes.func,
+    fetch: PropTypes.func,
+    fetchCancelled: PropTypes.func,
     history: PropTypes.object
   }
 
   componentDidMount() {
     if (!this.props.publications) {
-      this.props.fetchPublications()
+      this.props.fetch()
     }
   }
 
   componentWillUnmount() {
-    this.props.fetchPublicationsCancelled()
+    this.props.fetchCancelled()
   }
 
   renderList() {
@@ -75,6 +75,6 @@ function mapStateToProps({ publications }) {
 }
 
 export default connect(mapStateToProps, {
-  fetchPublications,
-  fetchPublicationsCancelled
+  fetch,
+  fetchCancelled
 })(PublicationList)

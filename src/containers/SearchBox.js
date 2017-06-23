@@ -4,13 +4,13 @@ import { connect } from 'react-redux'
 import AutoComplete from 'material-ui/AutoComplete'
 import MenuItem from 'material-ui/MenuItem'
 
-import { fetchAutoCompleteItems } from '../actions'
+import { fetch } from '../actions/autoComplete'
 
 class SearchBox extends Component {
 
   static propTypes = {
     onItemSelected: PropTypes.func,
-    fetchAutoCompleteItems: PropTypes.func,
+    fetch: PropTypes.func,
     items: PropTypes.array
   }
 
@@ -54,7 +54,7 @@ class SearchBox extends Component {
     if (!term) {
       return this.setState({ dataSource: [] })
     }
-    this.props.fetchAutoCompleteItems(term)
+    this.props.fetch(term)
   }
 
   onNewRequest = (chosenRequest, index) => {
@@ -72,8 +72,7 @@ class SearchBox extends Component {
 function mapStateToProps(state) {
   return {
     items: state.autoCompleteItems,
-    fetchAutoCompleteItems: state.fetchAutoCompleteItems
   }
 }
 
-export default connect(mapStateToProps, { fetchAutoCompleteItems })(SearchBox)
+export default connect(mapStateToProps, { fetch })(SearchBox)
