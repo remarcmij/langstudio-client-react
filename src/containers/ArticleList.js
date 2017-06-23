@@ -19,9 +19,14 @@ class ArticleList extends Component {
     history: PropTypes.object
   }
 
+  get articles() {
+    const { publication } = this.props.match.params
+    return this.props.articles[publication]
+  }
+
   componentDidMount() {
     const { publication } = this.props.match.params
-    const articles = this.props.articles[publication]
+    const articles = this.articles
     if (!articles) {
       this.props.fetchArticles(publication)
     }
@@ -44,8 +49,7 @@ class ArticleList extends Component {
   }
 
   render() {
-    const { publication } = this.props.match.params
-    const articles = this.props.articles[publication]
+    const articles = this.articles
     return (
       <div>
         <AppBar

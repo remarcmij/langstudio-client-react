@@ -28,7 +28,8 @@ class PublicationList extends Component {
     this.props.fetchPublicationsCancelled()
   }
 
-  renderList(publications) {
+  renderList() {
+    const { publications } = this.props
     if (!publications) {
       return null
     }
@@ -41,7 +42,6 @@ class PublicationList extends Component {
   }
 
   render() {
-    const { publications } = this.props
     return (
       <div>
         <AppBar
@@ -54,7 +54,7 @@ class PublicationList extends Component {
           }
         />
         <List>
-          {this.renderList(publications)}
+          {this.renderList()}
         </List>
       </div>
     )
