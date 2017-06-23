@@ -7,12 +7,10 @@ import {
   FETCH_ARTICLES_CANCELLED
 } from '../actions'
 
-export default (state = null, { type, payload }) => {
+export default (state = {}, { type, payload }) => {
   switch (type) {
     case FETCH_ARTICLES_FULFILLED:
-      return payload
-    case FETCH_ARTICLES_CANCELLED:
-      return null
+      return { ...state, ...payload }
     default:
       return state
   }
@@ -21,8 +19,9 @@ export default (state = null, { type, payload }) => {
 export const fetchArticlesEpic = action$ =>
   action$.ofType(FETCH_ARTICLES)
     .switchMap(action => {
-      const url = `${config.apiEndPoint}/topics/${action.payload.publication}?auth=${config.token}`
+      const { publication } = action.payload
+      const url = `${config.apiEndPoint}/topics/${publication}?auth=${config.token}`
       return Observable.ajax(url)
-        .map(res => ({ type: FETCH_ARTICLES_FULFILLED, payload: res.response }))
+        .map(res => ({ type: FETCH_ARTICLES_FULFILLED, payload: { [publication]: res.response } }))
         .takeUntil(action$.ofType(FETCH_ARTICLES_CANCELLED))
     })

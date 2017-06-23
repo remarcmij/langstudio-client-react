@@ -12,7 +12,7 @@ import { fetchArticles, fetchArticlesCancelled } from '../actions'
 class ArticleList extends Component {
 
   static propTypes = {
-    topics: PropTypes.array,
+    articles: PropTypes.object,
     fetchArticles: PropTypes.func,
     fetchArticlesCancelled: PropTypes.func,
     match: PropTypes.object,
@@ -21,27 +21,31 @@ class ArticleList extends Component {
 
   componentDidMount() {
     const { publication } = this.props.match.params
-    this.props.fetchArticles(publication)
+    const articles = this.props.articles[publication]
+    if (!articles) {
+      this.props.fetchArticles(publication)
+    }
   }
 
   componentWillUnmount() {
     this.props.fetchArticlesCancelled()
   }
 
-  renderList(topics) {
-    if (!topics) {
+  renderList(articles) {
+    if (!articles) {
       return null
     }
-    return topics.slice(1).map(topic => (
+    return articles.slice(1).map(article => (
       <ArticleListItem
-        key={topic._id}
-        topic={topic}
+        key={article._id}
+        article={article}
         onTouchTap={this.onArticleListItemTouchTap} />
     ))
   }
 
   render() {
-    const { topics } = this.props
+    const { publication } = this.props.match.params
+    const articles = this.props.articles[publication]
     return (
       <div>
         <AppBar
@@ -58,18 +62,18 @@ class ArticleList extends Component {
             </IconButton>
           }
         />
-        <List dir={this.getDir(topics)}>
-          {this.renderList(topics)}
+        <List dir={this.getDir(articles)}>
+          {this.renderList(articles)}
         </List>
       </div>
     )
   }
 
-  getDir(topics) {
-    if (!topics) {
+  getDir(articles) {
+    if (!articles) {
       return 'ltr'
     }
-    const firstTopic = topics[0]
+    const firstTopic = articles[0]
     return firstTopic.baseLang.startsWith('ar') || firstTopic.targetLang.startsWith('ar') ? 'rtl' : 'ltr'
   }
 
@@ -87,11 +91,8 @@ class ArticleList extends Component {
 
 }
 
-function mapStateToProps(state) {
-  return {
-    topics: state.articleTopics,
-    fetchArticles: state.fetchArticles
-  }
+function mapStateToProps({ articles }) {
+  return { articles }
 }
 
 export default connect(mapStateToProps, {

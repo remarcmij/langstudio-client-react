@@ -2,8 +2,8 @@ import { combineReducers } from 'redux'
 import { combineEpics } from 'redux-observable'
 
 import publicationsReducer, { fetchPublicationsEpic } from './publicationsReducer'
-import articlesReducer, { fetchArticlesEpic} from './articlesReducer'
-import articleContentReducer, {fetchArticleContentEpic} from './articleContentReducer'
+import articlesReducer, { fetchArticlesEpic } from './articlesReducer'
+import articleContentReducer, { fetchArticleContentEpic } from './articleContentReducer'
 import autoCompleteReducer, { fetchAutoCompleteEpic } from './autoCompleteReducer'
 
 
@@ -15,8 +15,8 @@ export const rootEpic = combineEpics(
 )
 
 export const rootReducer = combineReducers({
-  publicationTopics: publicationsReducer,
-  articleTopics: articlesReducer,
+  publications: publicationsReducer,
+  articles: articlesReducer,
   articleContent: articleContentReducer,
   autoCompleteItems: autoCompleteReducer
 })

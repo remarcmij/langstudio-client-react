@@ -12,34 +12,36 @@ import { fetchPublications, fetchPublicationsCancelled } from '../actions'
 class PublicationList extends Component {
 
   static propTypes = {
-    topics: PropTypes.array,
+    publications: PropTypes.array,
     fetchPublications: PropTypes.func,
     fetchPublicationsCancelled: PropTypes.func,
     history: PropTypes.object
   }
 
   componentDidMount() {
-    this.props.fetchPublications()
+    if (!this.props.publications) {
+      this.props.fetchPublications()
+    }
   }
 
   componentWillUnmount() {
     this.props.fetchPublicationsCancelled()
   }
 
-  renderList(topics) {
-    if (!topics) {
+  renderList(publications) {
+    if (!publications) {
       return null
     }
-    return topics.map(topic => (
+    return publications.map(publication => (
       <PublicationListItem
-        key={topic._id}
-        topic={topic}
+        key={publication._id}
+        publication={publication}
         onTouchTap={this.onPublicationItemTouchTap} />
     ))
   }
 
   render() {
-    const { topics } = this.props
+    const { publications } = this.props
     return (
       <div>
         <AppBar
@@ -52,7 +54,7 @@ class PublicationList extends Component {
           }
         />
         <List>
-          {this.renderList(topics)}
+          {this.renderList(publications)}
         </List>
       </div>
     )
@@ -68,10 +70,8 @@ class PublicationList extends Component {
 
 }
 
-function mapStateToProps(state) {
-  return {
-    topics: state.publicationTopics
-  }
+function mapStateToProps({ publications }) {
+  return { publications }
 }
 
 export default connect(mapStateToProps, {

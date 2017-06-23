@@ -10,7 +10,7 @@ import { fetchArticleContent, fetchArticleContentCancelled } from '../actions'
 class ArticleDetail extends Component {
 
   static propTypes = {
-    article: PropTypes.object,
+    articleContent: PropTypes.object,
     fetchArticleContent: PropTypes.func,
     fetchArticleContentCancelled: PropTypes.func,
     match: PropTypes.object,
@@ -44,7 +44,7 @@ class ArticleDetail extends Component {
           }
 
         />
-        <ArticleContent article={this.props.article} />
+        <ArticleContent article={this.props.articleContent} />
       </div>
     )
   }
@@ -59,10 +59,8 @@ class ArticleDetail extends Component {
 
 }
 
-function mapStateToProps(state) {
-  return {
-    article: state.articleContent
-  }
+function mapStateToProps({ articleContent }) {
+  return { articleContent }
 }
 
 export default connect(mapStateToProps, {
