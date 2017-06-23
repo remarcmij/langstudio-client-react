@@ -4,11 +4,10 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware } from 'redux'
 import { createEpicMiddleware } from 'redux-observable'
-import ReduxPromise from 'redux-promise'
 import logger from 'redux-logger'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
-import './rx-operators'
+import './rx-addons'
 
 import './index.css'
 import {rootReducer, rootEpic } from './reducers'
@@ -22,7 +21,7 @@ speechService.setup()
 injectTapEventPlugin()
 
 const epicMiddleware = createEpicMiddleware(rootEpic)
-const createStoreWithMiddleware = applyMiddleware(ReduxPromise, epicMiddleware, logger)(createStore)
+const createStoreWithMiddleware = applyMiddleware(epicMiddleware, logger)(createStore)
 
 ReactDOM.render(
   <Provider store={createStoreWithMiddleware(rootReducer)}>
