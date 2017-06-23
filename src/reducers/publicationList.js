@@ -1,6 +1,8 @@
 import * as actions from '../actions/publicationList'
 
-export default (state = {}, action) => {
+const initialState = {}
+
+export default (state = initialState, action) => {
   switch (action.type) {
     case actions.FETCH:
       return fetch(state, action)
@@ -15,14 +17,14 @@ export default (state = {}, action) => {
   }
 }
 
-const fetch = ( ) => ({
-  list: null,
+const fetch = () => ({
+  topics: null,
   loading: true,
   error: null
 })
 
 const fetchFulfilled = (state, action) => ({
-  list: action.list,
+  topics: action.topics,
   loading: false,
   error: null
 })

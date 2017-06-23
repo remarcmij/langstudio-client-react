@@ -8,19 +8,19 @@ import { List } from 'material-ui/List'
 
 import PublicationListItem from '../components/PublicationListItem'
 import { fetch, fetchCancelled } from '../actions/publicationList'
-import { getPublicationList } from '../selectors/publicationList'
+import { getPublications } from '../selectors/publicationList'
 
 class PublicationList extends Component {
 
   static propTypes = {
-    publicationList: PropTypes.array,
+    publications: PropTypes.array,
     fetch: PropTypes.func,
     fetchCancelled: PropTypes.func,
     history: PropTypes.object
   }
 
   componentDidMount() {
-    if (!this.props.publicationList) {
+    if (!this.props.publications) {
       this.props.fetch()
     }
   }
@@ -30,11 +30,11 @@ class PublicationList extends Component {
   }
 
   renderList() {
-    const { publicationList } = this.props
-    if (!publicationList) {
+    const { publications } = this.props
+    if (!publications) {
       return null
     }
-    return publicationList.map(publication => (
+    return publications.map(publication => (
       <PublicationListItem
         key={publication._id}
         publication={publication}
@@ -72,7 +72,7 @@ class PublicationList extends Component {
 }
 
 function mapStateToProps(state) {
-  return { publicationList: getPublicationList(state) }
+  return { publications: getPublications(state) }
 }
 
 export default connect(mapStateToProps, {

@@ -2,7 +2,7 @@ import * as actions from '../actions/articleList'
 
 const initialState = {
   publication: '',
-  items: {},
+  topics: {},
   loading: false,
   error: null
 }
@@ -31,7 +31,7 @@ const fetch = (state, action) => ({
 
 const fetchFulfilled = (state, action) => ({
   ...state,
-  items: { ...state.items, [action.publication]: action.items },
+  topics: { ...state.topics, [action.publication]: action.topics },
   loading: false,
   error: null
 })

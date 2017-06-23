@@ -21,9 +21,9 @@ export const fetchPublicationListEpic = action$ =>
         .takeUntil(action$.ofType(FETCH_CANCELLED))
     })
 
-const fetchFulfilled = (list) => ({
+const fetchFulfilled = (topics) => ({
   type: FETCH_FULFILLED,
-  list,
+  topics,
 })
 
 const fetchError = (error) => ({

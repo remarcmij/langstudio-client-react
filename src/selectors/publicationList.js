@@ -1,1 +1,1 @@
-export const getPublicationList = (state) => state.publicationList.list
+export const getPublications = (state) => state.publicationList.topics
