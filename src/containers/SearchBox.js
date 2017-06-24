@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import AutoComplete from 'material-ui/AutoComplete'
 import MenuItem from 'material-ui/MenuItem'
 
-import { fetchAutoCompleteList } from '../actions/autoCompleteList'
+import * as actions from '../actions/autoCompleteList'
 import * as selectors from '../selectors/autoCompleteList'
 import './SearchBox.css'
 
@@ -16,6 +16,10 @@ class SearchBox extends Component {
     items: PropTypes.array,
     loading: PropTypes.bool,
     error: PropTypes.object
+  }
+
+  static defaultProps = {
+    onItemSelected: () => undefined
   }
 
   state = {
@@ -88,5 +92,5 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
-  fetchAutoCompleteList
+  fetchAutoCompleteList: actions.fetchAutoCompleteList
 })(SearchBox)

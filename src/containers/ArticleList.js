@@ -8,7 +8,7 @@ import { List } from 'material-ui/List'
 
 import ArticleListItem from '../components/ArticleListItem'
 import NetworkError from '../components/NetworkError'
-import { fetchArticleList, fetchArticleListCancelled } from '../actions/articleList'
+import * as actions from '../actions/articleList'
 import * as selectors from '../selectors/articleList'
 
 class ArticleList extends Component {
@@ -37,17 +37,18 @@ class ArticleList extends Component {
   }
 
   componentWillUnmount() {
-    if (this.props.loading) {
-      this.props.fetchArticleListCancelled()
+    const { loading, fetchArticleListCancelled } = this.props
+    if (loading) {
+      fetchArticleListCancelled()
     }
   }
 
   renderList(articles) {
     const { publication } = this.props.match.params
-    const { error } = this.props
-    if (this.props.error) {
+    const { error, fetchArticleList } = this.props
+    if (error) {
       return (
-        <NetworkError error={error} retry={() => this.props.fetchArticleList(publication)} />
+        <NetworkError error={error} retry={() => fetchArticleList(publication)} />
       )
     }
     if (!articles) {
@@ -117,6 +118,6 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
-  fetchArticleList,
-  fetchArticleListCancelled
+  fetchArticleList: actions.fetchArticleList,
+  fetchArticleListCancelled: actions.fetchArticleListCancelled
 })(ArticleList)

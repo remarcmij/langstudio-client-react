@@ -7,7 +7,7 @@ import FontIcon from 'material-ui/FontIcon'
 
 import ArticleContent from '../components/ArticleContent'
 import NetworkError from '../components/NetworkError'
-import { fetchArticle, fetchArticleCancelled, clearArticle } from '../actions/article'
+import * as actions from '../actions/article'
 import * as selectors from '../selectors/article'
 
 class Article extends Component {
@@ -31,18 +31,19 @@ class Article extends Component {
   }
 
   componentWillUnmount() {
-    if (this.props.loading) {
-      this.props.fetchArticleCancelled()
+    const { loading, fetchArticleCancelled, clearArticle } = this.props
+    if (loading) {
+      fetchArticleCancelled()
     } else {
-      this.props.clearArticle()
+      clearArticle()
     }
   }
 
   renderArticleContent() {
-    const { error, article, publication, chapter } = this.props
+    const { error, article, publication, chapter, fetchArticle } = this.props
     if (error) {
       return (
-        <NetworkError error={error} retry={() => this.props.fetchArticle(publication, chapter)} />
+        <NetworkError error={error} retry={() => fetchArticle(publication, chapter)} />
       )
     }
     if (!article) {
@@ -97,7 +98,7 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
-  fetchArticle,
-  fetchArticleCancelled,
-  clearArticle
+  fetchArticle: actions.fetchArticle,
+  fetchArticleCancelled: actions.fetchArticleCancelled,
+  clearArticle: actions.clearArticle
 })(Article)
