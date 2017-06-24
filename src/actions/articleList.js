@@ -27,9 +27,11 @@ export const fetchArticleListEpic = action$ =>
   action$.ofType(FETCH)
     .switchMap(action => {
       const { publication } = action
-      const url = `${config.apiEndPoint}/topics/${publication}?auth=${config.token}`
-      return Observable.ajax(url)
-        .map(res => fetchFulfilled(publication, res.response))
+      const url = `${config.apiEndPoint}/topics/${publication}`
+      return Observable.ajax({
+        url,
+        headers: { Authorization: `Bearer ${config.token}` }
+      }).map(res => fetchFulfilled(publication, res.response))
         .catch(error => Observable.of(fetchError(publication, error)))
         .takeUntil(action$.ofType(FETCH_CANCELLED))
     })

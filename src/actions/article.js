@@ -25,9 +25,11 @@ export const fetchArticleEpic = action$ =>
       if (actionOut) {
         return Observable.of(actionOut)
       }
-      const url = `${config.apiEndPoint}/article/${fileName}/?auth=${config.token}`
-      return Observable.ajax(url)
-        .map(res => fetchFulfilled(res.response))
+      const url = `${config.apiEndPoint}/article/${fileName}`
+      return Observable.ajax({
+        url,
+        headers: { Authorization: `Bearer ${config.token}` }
+      }).map(res => fetchFulfilled(res.response))
         .do(actionOut => cache.set(fileName, actionOut))
         .catch(error => Observable.of(fetchError(error)))
         .takeUntil(action$.ofType(FETCH_CANCELLED))

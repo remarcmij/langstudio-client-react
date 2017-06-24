@@ -17,9 +17,11 @@ const fetchError = (error) => ({ type: FETCH_ERROR, error })
 export const fetchPublicationListEpic = action$ =>
   action$.ofType(FETCH)
     .switchMap(() => {
-      const url = `${config.apiEndPoint}/topics?auth=${config.token}`
-      return Observable.ajax(url)
-        .map(res => fetchFulfilled(res.response))
+      const url = `${config.apiEndPoint}/topics`
+      return Observable.ajax({
+        url,
+        headers: { Authorization: `Bearer ${config.token}` }
+      }).map(res => fetchFulfilled(res.response))
         .catch(error => Observable.of(fetchError(error)))
         .takeUntil(action$.ofType(FETCH_CANCELLED))
     })
