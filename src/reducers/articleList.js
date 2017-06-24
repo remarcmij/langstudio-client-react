@@ -6,20 +6,6 @@ const initialState = {
   error: null
 }
 
-export default (state = initialState, action) => {
-  switch (action.type) {
-    case actions.FETCH:
-      return fetch(state, action)
-    case actions.FETCH_FULFILLED:
-      return fetchFulfilled(state, action)
-    case actions.FETCH_CANCELLED:
-      return fetchCancelled(state, action)
-    case actions.FETCH_ERROR:
-      return fetchError(state, action)
-    default:
-      return state
-  }
-}
 
 const fetch = (state) => ({
   ...state,
@@ -45,3 +31,18 @@ const fetchError = (state, action) => ({
   loading: false,
   error: action.error
 })
+
+export default (state = initialState, action) => {
+  switch (action.type) {
+    case actions.FETCH:
+      return fetch(state, action)
+    case actions.FETCH_FULFILLED:
+      return fetchFulfilled(state, action)
+    case actions.FETCH_CANCELLED:
+      return fetchCancelled(state, action)
+    case actions.FETCH_ERROR:
+      return fetchError(state, action)
+    default:
+      return state
+  }
+}

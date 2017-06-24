@@ -8,22 +8,6 @@ const initialState = {
   error: null
 }
 
-export default (state = initialState, action) => {
-  switch (action.type) {
-    case actions.FETCH:
-      return fetch(state, action)
-    case actions.FETCH_FULFILLED:
-      return fetchFulfilled(state, action)
-    case actions.FETCH_CANCELLED:
-      return fetchCancelled(state, action)
-    case actions.FETCH_ERROR:
-      return fetchError(state, action)
-    case actions.CLEAR:
-      return articleCleared(state, action)
-    default:
-      return state
-  }
-}
 
 const fetch = (state, action) => ({
   article: null,
@@ -57,3 +41,20 @@ const articleCleared = () => ({
   loading: false,
   error: null
 })
+
+export default (state = initialState, action) => {
+  switch (action.type) {
+    case actions.FETCH:
+      return fetch(state, action)
+    case actions.FETCH_FULFILLED:
+      return fetchFulfilled(state, action)
+    case actions.FETCH_CANCELLED:
+      return fetchCancelled(state, action)
+    case actions.FETCH_ERROR:
+      return fetchError(state, action)
+    case actions.CLEAR:
+      return articleCleared(state, action)
+    default:
+      return state
+  }
+}

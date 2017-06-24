@@ -6,19 +6,6 @@ const intialState = {
   error: null
 }
 
-export default (state = intialState, action) => {
-  switch (action.type) {
-    case actions.FETCH:
-      return fetch(state, action)
-    case actions.FETCH_FULFILLED:
-      return fetchFulfilled(state, action)
-    case actions.FETCH_ERROR:
-      return fetchError(state, action)
-    default:
-      return state
-  }
-}
-
 const fetch = () => ({
   items: null,
   loading: true,
@@ -36,3 +23,17 @@ const fetchError = (state, action) => ({
   loading: false,
   error: action.error
 })
+
+export default (state = intialState, action) => {
+  switch (action.type) {
+    case actions.FETCH:
+      return fetch(state, action)
+    case actions.FETCH_FULFILLED:
+      return fetchFulfilled(state, action)
+    case actions.FETCH_ERROR:
+      return fetchError(state, action)
+    default:
+      return state
+  }
+}
+

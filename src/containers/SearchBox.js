@@ -83,13 +83,11 @@ class SearchBox extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    items: selectors.getItems(state),
-    loading: selectors.getLoading(state),
-    error: selectors.getError(state)
-  }
-}
+const mapStateToProps = (state) => ({
+  items: selectors.getItems(state),
+  loading: selectors.getLoading(state),
+  error: selectors.getError(state)
+})
 
 export default connect(mapStateToProps, {
   fetchAutoCompleteList: actions.fetchAutoCompleteList

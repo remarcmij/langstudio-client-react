@@ -2,29 +2,18 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Paper from 'material-ui/Paper'
 
-import speechService from '../services/speechService'
 import './ArticleContent.css'
 
-const ArticleContent = props => {
+const noop = () => undefined
+
+const ArticleContent = ({article, onTextClick}) => {
 
   function getDir() {
-    const { baseLang, targetLang } = props.article._topic
+    const { baseLang, targetLang } = article._topic
     return baseLang.startsWith('ar') || targetLang.startsWith('ar') ? 'rtl' : 'ltr'
   }
 
-  function onClick(ev) {
-    if (speechService.isSpeechSynthesisSupported) {
-      if (ev.target.tagName === 'SPAN') {
-        ev.preventDefault()
-        ev.stopPropagation()
-        const text = ev.target.innerText.trim()
-        const { targetLang } = props.article._topic
-        speechService.speak(text, targetLang)
-      }
-    }
-  }
-
-  const { htmlText } = props.article
+  const { htmlText } = article
 
   return (
     <div className="article-content">
@@ -32,7 +21,7 @@ const ArticleContent = props => {
         <article
           className="markdown-body"
           dir={getDir()}
-          onClick={onClick}
+          onClick={onTextClick}
           dangerouslySetInnerHTML={{ __html: htmlText }}
         />
       </Paper>
@@ -41,13 +30,12 @@ const ArticleContent = props => {
 }
 
 ArticleContent.propTypes = {
-  article: PropTypes.object,
-  onClick: PropTypes.func
+  article: PropTypes.object.isRequired,
+  onTextClick: PropTypes.func
 }
 
 ArticleContent.defaultProps = {
-  article: {},
-  onClick: () => undefined
+  onTextClick: noop
 }
 
 export default ArticleContent

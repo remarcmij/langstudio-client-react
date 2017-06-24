@@ -4,9 +4,7 @@ import { Card, CardActions, CardHeader } from 'material-ui/Card'
 import FlatButton from 'material-ui/FlatButton'
 import './NetworkError.css'
 
-const emptyFunction = () => undefined
-
-const NetworkError = ({ error, retry = emptyFunction }) => {
+const NetworkError = ({ error, onRetryClick }) => {
   return (
     <Card className="network-error--card">
       <CardHeader
@@ -14,15 +12,19 @@ const NetworkError = ({ error, retry = emptyFunction }) => {
         subtitle={'Error: ' + error.message}
       />
       <CardActions>
-        <FlatButton label="Retry" onClick={retry} />
+        <FlatButton label="Retry" onClick={onRetryClick} />
       </CardActions>
     </Card>
   )
 }
 
 NetworkError.propTypes = {
-  error: PropTypes.object,
-  retry: PropTypes.func
+  error: PropTypes.object.isRequired,
+  onRetryClick: PropTypes.func
+}
+
+NetworkError.defaultProps = {
+  onRetryClick: () => undefined
 }
 
 export default NetworkError

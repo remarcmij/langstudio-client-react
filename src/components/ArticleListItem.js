@@ -18,8 +18,12 @@ const ArticleListItem = ({ article, onTouchTap }) => (
 )
 
 ArticleListItem.propTypes = {
-  article: PropTypes.object,
+  article: PropTypes.object.isRequired,
   onTouchTap: PropTypes.func
+}
+
+ArticleListItem.defaultProps = {
+  onTouchTap: () => undefined
 }
 
 export default ArticleListItem

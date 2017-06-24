@@ -3,10 +3,12 @@ import PropTypes from 'prop-types'
 import { ListItem } from 'material-ui/List'
 import Divider from 'material-ui/Divider'
 
-const PublicationListItem = ({ publication, onTouchTap }) => (
+const noop = () => undefined
+
+const PublicationListItem = ({ publication, onItemClick }) => (
   <div>
     <ListItem
-      onTouchTap={() => onTouchTap(publication)}
+      onTouchTap={() => onItemClick(publication)}
       primaryText={publication.title}
       secondaryText={
         <p>{publication.subtitle}</p>
@@ -18,8 +20,12 @@ const PublicationListItem = ({ publication, onTouchTap }) => (
 )
 
 PublicationListItem.propTypes = {
-  publication: PropTypes.object,
-  onTouchTap: PropTypes.func
+  publication: PropTypes.object.isRequired,
+  onItemClick: PropTypes.func
+}
+
+PublicationListItem.defaultProps = {
+  onItemClick: noop
 }
 
 export default PublicationListItem

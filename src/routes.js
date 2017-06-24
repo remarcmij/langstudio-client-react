@@ -1,16 +1,16 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
 
-import PublicationList from './containers/PublicationList'
-import ArticleList from './containers/ArticleList'
-import Article from './containers/Article'
-import SearchPage from './containers/SearchPage'
+import PublicationListContainer from './containers/PublicationListContainer'
+import ArticleListContainer from './containers/ArticleListContainer'
+import ArticleContainer from './containers/ArticleContainer'
+import SearchPageContainer from './containers/SearchPageContainer'
 
 export default (
   <div>
-    <Route exact path="/" component={PublicationList} />
-    <Route exact path="/content/:publication" component={ArticleList} />
-    <Route path="/content/:publication/:chapter" component={Article} />
-    <Route path="/search" component={SearchPage} />
+    <Route exact path="/" component={PublicationListContainer} />
+    <Route exact path="/content/:publication" component={ArticleListContainer} />
+    <Route path="/content/:publication/:chapter" component={ArticleContainer} />
+    <Route path="/search" component={SearchPageContainer} />
   </div>
 )
