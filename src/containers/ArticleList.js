@@ -38,7 +38,10 @@ class ArticleList extends Component {
   }
 
   componentWillUnmount() {
-    this.props.fetchCancelled()
+    const { loading, fetchCancelled } = this.props
+    if (loading) {
+      fetchCancelled()
+    }
   }
 
   renderList(articles) {

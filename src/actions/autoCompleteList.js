@@ -15,6 +15,16 @@ export const fetchAutoCompleteListEpic = action$ =>
     .switchMap(action => {
       const url = `${config.apiEndPoint}/search/autocomplete?term=${action.term}`
       return Observable.ajax(url)
-        .map(res => ({ type: FETCH_FULFILLED, items: res.response }))
-        .catch(error => Observable.of({ type: FETCH_ERROR, error }))
+        .map(res => fetchFulfilled(res.response))
+        .catch(error => Observable.of(fetchError(error)))
     })
+
+const fetchFulfilled = (items) => ({
+  type: FETCH_FULFILLED,
+  items
+})
+
+const fetchError = (error) => ({
+  type: FETCH_ERROR,
+  error
+})

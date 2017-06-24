@@ -5,21 +5,28 @@ import AutoComplete from 'material-ui/AutoComplete'
 import MenuItem from 'material-ui/MenuItem'
 
 import { fetch } from '../actions/autoCompleteList'
+import * as selectors from '../selectors/autoCompleteList'
 
 class SearchBox extends Component {
 
   static propTypes = {
     onItemSelected: PropTypes.func,
     fetch: PropTypes.func,
-    items: PropTypes.array
+    items: PropTypes.array,
+    loading: PropTypes.bool,
+    error: PropTypes.object
   }
 
   state = {
     dataSource: []
   }
 
-  componentWillReceiveProps(nextProps) {
-    const dataSource = nextProps.items.map(item => ({
+  componentWillReceiveProps({ items, loading, error }) {
+    if (loading || error) {
+      return
+    }
+
+    const dataSource = items.map(item => ({
       item,
       text: item.word,
       value: (
@@ -71,7 +78,9 @@ class SearchBox extends Component {
 
 function mapStateToProps(state) {
   return {
-    items: state.autoCompleteList,
+    items: selectors.getItems(state),
+    loading: selectors.getLoading(state),
+    error: selectors.getError(state)
   }
 }
 
