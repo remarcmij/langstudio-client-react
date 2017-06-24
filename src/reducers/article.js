@@ -18,6 +18,8 @@ export default (state = initialState, action) => {
       return fetchCancelled(state, action)
     case actions.FETCH_ERROR:
       return fetchError(state, action)
+    case actions.CLEARED:
+      return articleCleared(state, action)
     default:
       return state
   }
@@ -48,4 +50,10 @@ const fetchError = (state, action) => ({
   ...state,
   loading: false,
   error: action.error
+})
+
+const articleCleared = () => ({
+  article: null,
+  loading: false,
+  error: null
 })

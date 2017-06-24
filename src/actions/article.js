@@ -8,11 +8,13 @@ export const FETCH = PREFIX + 'FETCH'
 export const FETCH_FULFILLED = PREFIX + 'FETCH_FULFILLED'
 export const FETCH_CANCELLED = PREFIX + 'FETCH_CANCELLED'
 export const FETCH_ERROR = PREFIX + 'FETCH_ERROR'
+export const CLEARED = PREFIX + 'CLEARED'
 
 const cache = LRU({ max: 25, maxAge: 1000 * 60 * 60 })
 
 export const fetch = (publication, chapter) => ({ type: FETCH, publication, chapter })
 export const fetchCancelled = () => ({ type: FETCH_CANCELLED })
+export const articleCleared = () => ({ type: CLEARED })
 
 export const fetchArticleEpic = action$ =>
   action$.ofType(FETCH)

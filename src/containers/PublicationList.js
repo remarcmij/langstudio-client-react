@@ -8,7 +8,7 @@ import { List } from 'material-ui/List'
 
 import PublicationListItem from '../components/PublicationListItem'
 import NetworkError from '../components/NetworkError'
-import { fetch, fetchCancelled } from '../actions/publicationList'
+import * as actions from '../actions/publicationList'
 import * as selectors from '../selectors/publicationList'
 
 class PublicationList extends Component {
@@ -36,10 +36,10 @@ class PublicationList extends Component {
   }
 
   renderList() {
-    const { error, publications } = this.props
+    const { error, publications, fetch } = this.props
     if (error) {
       return (
-        <NetworkError error={error} retry={this.props.fetch} />
+        <NetworkError error={error} retry={fetch} />
       )
     }
     if (!publications) {
@@ -90,6 +90,6 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
-  fetch,
-  fetchCancelled
+  fetch: actions.fetch,
+  fetchCancelled: actions.fetchCancelled
 })(PublicationList)
