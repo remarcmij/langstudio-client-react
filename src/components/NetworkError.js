@@ -8,7 +8,7 @@ const emptyFunction = () => undefined
 
 const NetworkError = ({ error, retry = emptyFunction }) => {
   return (
-    <Card className="NetworkError__Card">
+    <Card className="network-error--card">
       <CardHeader
         title="A network error occurred"
         subtitle={'Error: ' + error.message}

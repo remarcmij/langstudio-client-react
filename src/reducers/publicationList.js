@@ -1,6 +1,10 @@
 import * as actions from '../actions/publicationList'
 
-const initialState = {}
+const initialState = {
+  topics: null,
+  loading: false,
+  error: null
+}
 
 export default (state = initialState, action) => {
   switch (action.type) {

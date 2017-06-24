@@ -8,18 +8,17 @@ import { List } from 'material-ui/List'
 
 import ArticleListItem from '../components/ArticleListItem'
 import NetworkError from '../components/NetworkError'
-import * as actions from '../actions/articleList'
+import { fetchArticleList, fetchArticleListCancelled } from '../actions/articleList'
 import * as selectors from '../selectors/articleList'
 
 class ArticleList extends Component {
 
   static propTypes = {
     articles: PropTypes.object,
-    publication: PropTypes.string,
     error: PropTypes.object,
     loading: PropTypes.bool,
-    fetch: PropTypes.func,
-    fetchCancelled: PropTypes.func,
+    fetchArticleList: PropTypes.func,
+    fetchArticleListCancelled: PropTypes.func,
     match: PropTypes.object,
     history: PropTypes.object
   }
@@ -33,22 +32,22 @@ class ArticleList extends Component {
   componentDidMount() {
     if (!this.articles) {
       const { publication } = this.props.match.params
-      this.props.fetch(publication)
+      this.props.fetchArticleList(publication)
     }
   }
 
   componentWillUnmount() {
-    const { loading, fetchCancelled } = this.props
-    if (loading) {
-      fetchCancelled()
+    if (this.props.loading) {
+      this.props.fetchArticleListCancelled()
     }
   }
 
   renderList(articles) {
-    const { error, publication, fetch } = this.props
-    if (error) {
+    const { publication } = this.props.match.params
+    const { error } = this.props
+    if (this.props.error) {
       return (
-        <NetworkError error={error} retry={() => fetch(publication)} />
+        <NetworkError error={error} retry={() => this.props.fetchArticleList(publication)} />
       )
     }
     if (!articles) {
@@ -112,13 +111,12 @@ class ArticleList extends Component {
 function mapStateToProps(state) {
   return {
     articles: selectors.getArticles(state),
-    publication: selectors.getPublication(state),
     loading: selectors.getLoading(state),
     error: selectors.getError(state)
   }
 }
 
 export default connect(mapStateToProps, {
-  fetch: actions.fetch,
-  fetchCancelled: actions.fetchCancelled
+  fetchArticleList,
+  fetchArticleListCancelled
 })(ArticleList)

@@ -18,7 +18,7 @@ export default (state = initialState, action) => {
       return fetchCancelled(state, action)
     case actions.FETCH_ERROR:
       return fetchError(state, action)
-    case actions.CLEARED:
+    case actions.CLEAR:
       return articleCleared(state, action)
     default:
       return state

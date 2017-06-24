@@ -7,7 +7,10 @@ export const FETCH = PREFIX + 'FETCH'
 export const FETCH_FULFILLED = PREFIX + 'FETCH_FULFILLED'
 export const FETCH_ERROR = PREFIX + 'FETCH_ERROR'
 
-export const fetch = term => ({ type: FETCH, term })
+export const fetchAutoCompleteList = term => ({ type: FETCH, term })
+
+const fetchFulfilled = (items) => ({ type: FETCH_FULFILLED, items })
+const fetchError = (error) => ({ type: FETCH_ERROR, error })
 
 export const fetchAutoCompleteListEpic = action$ =>
   action$.ofType(FETCH)
@@ -19,12 +22,3 @@ export const fetchAutoCompleteListEpic = action$ =>
         .catch(error => Observable.of(fetchError(error)))
     })
 
-const fetchFulfilled = (items) => ({
-  type: FETCH_FULFILLED,
-  items
-})
-
-const fetchError = (error) => ({
-  type: FETCH_ERROR,
-  error
-})

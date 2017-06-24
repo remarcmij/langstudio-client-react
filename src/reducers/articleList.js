@@ -1,7 +1,6 @@
 import * as actions from '../actions/articleList'
 
 const initialState = {
-  publication: '',
   topics: {},
   loading: false,
   error: null
@@ -22,9 +21,8 @@ export default (state = initialState, action) => {
   }
 }
 
-const fetch = (state, action) => ({
+const fetch = (state) => ({
   ...state,
-  publication: action.publication,
   loading: true,
   error: null
 })

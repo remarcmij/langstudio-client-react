@@ -7,7 +7,7 @@ import FontIcon from 'material-ui/FontIcon'
 
 import ArticleContent from '../components/ArticleContent'
 import NetworkError from '../components/NetworkError'
-import * as actions from '../actions/article'
+import { fetchArticle, fetchArticleCancelled, clearArticle } from '../actions/article'
 import * as selectors from '../selectors/article'
 
 class Article extends Component {
@@ -18,32 +18,31 @@ class Article extends Component {
     chapter: PropTypes.string,
     loading: PropTypes.bool,
     error: PropTypes.object,
-    fetch: PropTypes.func,
-    fetchCancelled: PropTypes.func,
-    articleCleared: PropTypes.func,
+    fetchArticle: PropTypes.func,
+    fetchArticleCancelled: PropTypes.func,
+    clearArticle: PropTypes.func,
     match: PropTypes.object,
     history: PropTypes.object
   }
 
   componentDidMount() {
     const { publication, chapter } = this.props.match.params
-    this.props.fetch(publication, chapter)
+    this.props.fetchArticle(publication, chapter)
   }
 
   componentWillUnmount() {
-    const { loading, fetchCancelled, articleCleared } = this.props
-    if (loading) {
-      fetchCancelled()
+    if (this.props.loading) {
+      this.props.fetchArticleCancelled()
     } else {
-      articleCleared()
+      this.props.clearArticle()
     }
   }
 
   renderArticleContent() {
-    const { error, article, publication, chapter, fetch } = this.props
+    const { error, article, publication, chapter } = this.props
     if (error) {
       return (
-        <NetworkError error={error} retry={() => fetch(publication, chapter)} />
+        <NetworkError error={error} retry={() => this.props.fetchArticle(publication, chapter)} />
       )
     }
     if (!article) {
@@ -98,7 +97,7 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
-  fetch: actions.fetch,
-  fetchCancelled: actions.fetchCancelled,
-  articleCleared: actions.articleCleared
+  fetchArticle,
+  fetchArticleCancelled,
+  clearArticle
 })(Article)

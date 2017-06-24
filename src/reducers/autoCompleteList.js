@@ -1,7 +1,6 @@
 import * as actions from '../actions/autoCompleteList'
 
 const intialState = {
-  term: '',
   items: null,
   loading: false,
   error: null
@@ -20,15 +19,13 @@ export default (state = intialState, action) => {
   }
 }
 
-const fetch = (state, action) => ({
-  term: action.term,
+const fetch = () => ({
   items: null,
   loading: true,
   error: null
 })
 
 const fetchFulfilled = (state, action) => ({
-  ...state,
   items: action.items,
   loading: false,
   error: null

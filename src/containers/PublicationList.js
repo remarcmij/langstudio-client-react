@@ -8,7 +8,7 @@ import { List } from 'material-ui/List'
 
 import PublicationListItem from '../components/PublicationListItem'
 import NetworkError from '../components/NetworkError'
-import * as actions from '../actions/publicationList'
+import { fetchPublicationList, fetchPublicationListCancelled } from '../actions/publicationList'
 import * as selectors from '../selectors/publicationList'
 
 class PublicationList extends Component {
@@ -17,29 +17,28 @@ class PublicationList extends Component {
     publications: PropTypes.array,
     loading: PropTypes.bool,
     error: PropTypes.object,
-    fetch: PropTypes.func,
-    fetchCancelled: PropTypes.func,
+    fetchPublicationList: PropTypes.func,
+    fetchPublicationListCancelled: PropTypes.func,
     history: PropTypes.object
   }
 
   componentDidMount() {
     if (!this.props.publications) {
-      this.props.fetch()
+      this.props.fetchPublicationList()
     }
   }
 
   componentWillUnmount() {
-    const { loading, fetchCancelled } = this.props
-    if (loading) {
-      fetchCancelled()
+    if (this.props.loading) {
+      this.props.fetchPublicationListCancelled()
     }
   }
 
   renderList() {
-    const { error, publications, fetch } = this.props
+    const { error, publications } = this.props
     if (error) {
       return (
-        <NetworkError error={error} retry={fetch} />
+        <NetworkError error={error} retry={this.props.fetchPublicationList} />
       )
     }
     if (!publications) {
@@ -90,6 +89,6 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
-  fetch: actions.fetch,
-  fetchCancelled: actions.fetchCancelled
+  fetchPublicationList,
+  fetchPublicationListCancelled
 })(PublicationList)

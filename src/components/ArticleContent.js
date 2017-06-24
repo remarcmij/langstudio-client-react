@@ -27,7 +27,7 @@ const ArticleContent = props => {
   const { htmlText } = props.article
 
   return (
-    <div className="Article">
+    <div className="article-content">
       <Paper zDepth={2}>
         <article
           className="markdown-body"
@@ -43,6 +43,11 @@ const ArticleContent = props => {
 ArticleContent.propTypes = {
   article: PropTypes.object,
   onClick: PropTypes.func
+}
+
+ArticleContent.defaultProps = {
+  article: {},
+  onClick: () => undefined
 }
 
 export default ArticleContent
