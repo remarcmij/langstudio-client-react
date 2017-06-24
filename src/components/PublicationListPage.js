@@ -42,7 +42,7 @@ const PublicationListPage = ({ title, publications, error, onRetryClick, onItemC
 
 PublicationListPage.propTypes = {
   title: PropTypes.string.isRequired,
-  publications: PropTypes.array.isRequired,
+  publications: PropTypes.array,
   error: PropTypes.object,
   onRetryClick: PropTypes.func,
   onItemClick: PropTypes.func,

@@ -36,7 +36,7 @@ const ArticlePage = ({ article, error, onTextClick, onSearchClick, onBackClick, 
 }
 
 ArticlePage.propTypes = {
-  article: PropTypes.object.isRequired,
+  article: PropTypes.object,
   error: PropTypes.object,
   onTextClick: PropTypes.func,
   onSearchClick: PropTypes.func,

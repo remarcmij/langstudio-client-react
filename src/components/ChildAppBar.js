@@ -26,7 +26,7 @@ const ChildAppBar = ({ title, onBackClick, onSearchClick }) => {
 }
 
 ChildAppBar.propTypes = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   onBackClick: PropTypes.func,
   onSearchClick: PropTypes.func
 }
