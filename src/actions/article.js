@@ -11,7 +11,7 @@ export const FETCH_ERROR = PREFIX + 'FETCH_ERROR'
 
 const cache = LRU({ max: 25, maxAge: 1000 * 60 * 60 })
 
-export const fetch = (publication, chapter) => ({ type: FETCH, publication, chapter})
+export const fetch = (publication, chapter) => ({ type: FETCH, publication, chapter })
 export const fetchCancelled = () => ({ type: FETCH_CANCELLED })
 
 export const fetchArticleEpic = action$ =>
@@ -25,8 +25,18 @@ export const fetchArticleEpic = action$ =>
       }
       const url = `${config.apiEndPoint}/article/${fileName}/?auth=${config.token}`
       return Observable.ajax(url)
-        .map(res => ({ type: FETCH_FULFILLED, article: res.response }))
+        .map(res => fetchFulfilled(res.response))
         .do(actionOut => cache.set(fileName, actionOut))
-        .catch(error => Observable.of({ type: FETCH_ERROR, error }))
+        .catch(error => Observable.of(fetchError(error)))
         .takeUntil(action$.ofType(FETCH_CANCELLED))
     })
+
+const fetchFulfilled = (article) => ({
+  type: FETCH_FULFILLED,
+  article
+})
+
+const fetchError = (error) => ({
+  type: FETCH_ERROR,
+  error
+})

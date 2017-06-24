@@ -4,13 +4,20 @@ import { connect } from 'react-redux'
 import AppBar from 'material-ui/AppBar'
 import IconButton from 'material-ui/IconButton'
 import FontIcon from 'material-ui/FontIcon'
+
 import ArticleContent from '../components/ArticleContent'
+import NetworkError from '../components/NetworkError'
 import { fetch, fetchCancelled } from '../actions/article'
+import * as selectors from '../selectors/article'
 
 class Article extends Component {
 
   static propTypes = {
     article: PropTypes.object,
+    publication: PropTypes.string,
+    chapter: PropTypes.string,
+    loading: PropTypes.bool,
+    error: PropTypes.object,
     fetch: PropTypes.func,
     fetchCancelled: PropTypes.func,
     match: PropTypes.object,
@@ -24,6 +31,21 @@ class Article extends Component {
 
   componentWillUnmount() {
     this.props.fetchCancelled()
+  }
+
+  renderArticleContent() {
+    const { error, article, publication, chapter } = this.props
+    if (error) {
+      return (
+        <NetworkError error={error} retry={() => this.props.fetch(publication, chapter)} />
+      )
+    }
+    if (!article) {
+      return null
+    }
+    return (
+      <ArticleContent article={article} />
+    )
   }
 
   render() {
@@ -44,7 +66,7 @@ class Article extends Component {
           }
 
         />
-        <ArticleContent article={this.props.article} />
+        {this.renderArticleContent()}
       </div>
     )
   }
@@ -59,8 +81,14 @@ class Article extends Component {
 
 }
 
-function mapStateToProps({ article }) {
-  return { article }
+function mapStateToProps(state) {
+  return {
+    article: selectors.getArticle(state),
+    publication: selectors.getPublication(state),
+    chapter: selectors.getChapter(state),
+    loading: selectors.getLoading(state),
+    error: selectors.getError(state)
+  }
 }
 
 export default connect(mapStateToProps, {

@@ -7,6 +7,7 @@ import FontIcon from 'material-ui/FontIcon'
 import { List } from 'material-ui/List'
 
 import ArticleListItem from '../components/ArticleListItem'
+import NetworkError from '../components/NetworkError'
 import { fetch, fetchCancelled } from '../actions/articleList'
 import * as selectors from '../selectors/articleList'
 
@@ -14,6 +15,7 @@ class ArticleList extends Component {
 
   static propTypes = {
     articles: PropTypes.object,
+    publication: PropTypes.string,
     error: PropTypes.object,
     loading: PropTypes.bool,
     fetch: PropTypes.func,
@@ -40,10 +42,10 @@ class ArticleList extends Component {
   }
 
   renderList(articles) {
-    const { error } = this.props
+    const { error, publication } = this.props
     if (error) {
       return (
-        <p>Could not fetch data: {error.message}</p>
+        <NetworkError error={error} retry={() => this.props.fetch(publication)} />
       )
     }
     if (!articles) {

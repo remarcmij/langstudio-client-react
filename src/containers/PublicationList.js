@@ -7,13 +7,16 @@ import FontIcon from 'material-ui/FontIcon'
 import { List } from 'material-ui/List'
 
 import PublicationListItem from '../components/PublicationListItem'
+import NetworkError from '../components/NetworkError'
 import { fetch, fetchCancelled } from '../actions/publicationList'
-import { getPublications } from '../selectors/publicationList'
+import * as selectors from '../selectors/publicationList'
 
 class PublicationList extends Component {
 
   static propTypes = {
     publications: PropTypes.array,
+    loading: PropTypes.bool,
+    error: PropTypes.object,
     fetch: PropTypes.func,
     fetchCancelled: PropTypes.func,
     history: PropTypes.object
@@ -30,7 +33,12 @@ class PublicationList extends Component {
   }
 
   renderList() {
-    const { publications } = this.props
+    const { error, publications } = this.props
+    if (error) {
+      return (
+        <NetworkError error={error} retry={this.props.fetch} />
+      )
+    }
     if (!publications) {
       return null
     }
@@ -68,11 +76,14 @@ class PublicationList extends Component {
   onSearchButtonTouchTap = () => {
     this.props.history.push(`/search`)
   }
-
 }
 
 function mapStateToProps(state) {
-  return { publications: getPublications(state) }
+  return {
+    publications: selectors.getPublications(state),
+    loading: selectors.getLoading(state),
+    error: selectors.getError(state)
+  }
 }
 
 export default connect(mapStateToProps, {

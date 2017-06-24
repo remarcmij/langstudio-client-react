@@ -36,6 +36,7 @@ const fetchCancelled = (state) => ({
 })
 
 const fetchError = (state, action) => ({
+  ...state,
   loading: false,
   error: action.error
 })

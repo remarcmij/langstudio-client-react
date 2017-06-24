@@ -24,10 +24,6 @@ const ArticleContent = props => {
     }
   }
 
-  if (!props.article) {
-    return null
-  }
-
   const { htmlText } = props.article
 
   return (
