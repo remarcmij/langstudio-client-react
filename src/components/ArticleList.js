@@ -12,7 +12,7 @@ export default class ArticleList extends React.Component {
 
   static propTypes = {
     publication: PropTypes.string.isRequired,
-    topics: PropTypes.object,
+    topics: PropTypes.array,
     loading: PropTypes.bool,
     error: PropTypes.object,
     fetchArticleTopics: PropTypes.func.isRequired,
@@ -29,11 +29,6 @@ export default class ArticleList extends React.Component {
     onBackClick: noop,
     onSearchClick: noop,
     onItemClick: noop
-  }
-
-  get topics() {
-    const { topics, publication } = this.props
-    return topics[publication]
   }
 
   componentDidMount() {
@@ -77,8 +72,7 @@ export default class ArticleList extends React.Component {
   }
 
   render() {
-    const topics = this.topics
-    const { onBackClick, onSearchClick } = this.props
+    const { topics, onBackClick, onSearchClick } = this.props
     return (
       <div>
         <ChildAppBar

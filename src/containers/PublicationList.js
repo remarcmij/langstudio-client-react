@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 
 import PublicationList from '../components/PublicationList'
 import * as actions from '../actions/publicationList'
-import * as selectors from '../selectors/publicationList'
+import { getTopics, getLoading, getError } from '../reducers/publicationList'
 
 function PublicationListWrapper(props) {
   const { history } = props
@@ -31,9 +31,9 @@ PublicationListWrapper.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
-  topics: selectors.getTopics(state),
-  loading: selectors.getLoading(state),
-  error: selectors.getError(state)
+  topics: getTopics(state),
+  loading: getLoading(state),
+  error: getError(state)
 })
 
 const mapDispatchToProps = (dispatch) => ({

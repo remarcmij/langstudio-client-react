@@ -32,7 +32,7 @@ const fetchError = (state, action) => ({
   error: action.error
 })
 
-export default (state = initialState, action) => {
+const topics = (state = initialState, action) => {
   switch (action.type) {
     case actions.FETCH:
       return fetch(state, action)
@@ -46,3 +46,8 @@ export default (state = initialState, action) => {
       return state
   }
 }
+
+export default topics
+export const getTopics = (state, publication) => state.articleList.topics[publication]
+export const getLoading = (state) => state.articleList.loading
+export const getError = (state) => state.articleList.error

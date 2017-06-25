@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 
 import ArticleList from '../components/ArticleList'
 import * as actions from '../actions/articleList'
-import * as selectors from '../selectors/articleList'
+import {getTopics, getLoading, getError} from '../reducers/articleList'
 
 function ArticleListWrapper(props) {
   const { history, match } = props
@@ -37,10 +37,10 @@ ArticleListWrapper.propTypes = {
   match: PropTypes.object.isRequired
 }
 
-const mapStateToProps = (state) => ({
-  topics: selectors.getTopics(state),
-  loading: selectors.getLoading(state),
-  error: selectors.getError(state)
+const mapStateToProps = (state, { match }) => ({
+  topics: getTopics(state, match.params.publication),
+  loading: getLoading(state),
+  error: getError(state)
 })
 
 const mapDispatchToProps = (dispatch) => ({

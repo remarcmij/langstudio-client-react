@@ -24,7 +24,7 @@ const fetchError = (state, action) => ({
   error: action.error
 })
 
-export default (state = intialState, action) => {
+const items = (state = intialState, action) => {
   switch (action.type) {
     case actions.FETCH:
       return fetch(state, action)
@@ -37,3 +37,7 @@ export default (state = intialState, action) => {
   }
 }
 
+export default items
+export const getItems = (state) => state.autoCompleteList.items
+export const getLoading = (state) => state.autoCompleteList.loading
+export const getError = (state) => state.autoCompleteList.error
