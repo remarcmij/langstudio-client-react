@@ -8,8 +8,8 @@ export const FETCH_FULFILLED = PREFIX + 'FETCH_FULFILLED'
 export const FETCH_CANCELLED = PREFIX + 'FETCH_CANCELLED'
 export const FETCH_ERROR = PREFIX + 'FETCH_ERROR'
 
-export const fetchArticleList = (publication) => ({ type: FETCH, publication })
-export const fetchArticleListCancelled = () => ({ type: FETCH_CANCELLED })
+export const fetchArticleTopics = (publication) => ({ type: FETCH, publication })
+export const fetchArticleTopicsCancelled = () => ({ type: FETCH_CANCELLED })
 
 const fetchFulfilled = (publication, topics) => ({
   type: FETCH_FULFILLED,
@@ -23,7 +23,7 @@ const fetchError = (publication, error) => ({
   error
 })
 
-export const fetchArticleListEpic = action$ =>
+export const fetchArticleTopicsEpic = action$ =>
   action$.ofType(FETCH)
     .switchMap(action => {
       const { publication } = action

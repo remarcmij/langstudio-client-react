@@ -8,13 +8,13 @@ export const FETCH_FULFILLED = PREFIX + 'FETCH_FULFILLED'
 export const FETCH_CANCELLED = PREFIX + 'FETCH_CANCELLED'
 export const FETCH_ERROR = PREFIX + 'FETCH_ERROR'
 
-export const fetchPublicationList = () => ({ type: FETCH })
-export const fetchPublicationListCancelled = () => ({ type: FETCH_CANCELLED })
+export const fetchPublicationTopics = () => ({ type: FETCH })
+export const fetchPublicationTopicsCancelled = () => ({ type: FETCH_CANCELLED })
 
 const fetchFulfilled = (topics) => ({ type: FETCH_FULFILLED, topics })
 const fetchError = (error) => ({ type: FETCH_ERROR, error })
 
-export const fetchPublicationListEpic = action$ =>
+export const fetchPublicationTopicsEpic = action$ =>
   action$.ofType(FETCH)
     .switchMap(() => {
       const url = `${config.apiEndPoint}/topics`
