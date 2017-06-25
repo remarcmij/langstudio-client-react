@@ -4,35 +4,78 @@ import { connect } from 'react-redux'
 
 import Article from '../components/Article'
 import * as actions from '../actions/article'
-import {getArticle, getLoading, getError} from '../reducers/article'
+import { getArticle, getLoading, getError } from '../reducers/article'
+import speechService from '../services/speechService'
 
-function ArticleWrapper(props) {
-  const { history, match } = props
+class ArticleWrapper extends React.Component {
 
-  const onBackClick = () => {
-    history.push('/')
+  constructor(props) {
+    super(props)
+    this.onBackClick = this.onBackClick.bind(this)
+    this.onSearchClick = this.onSearchClick.bind(this)
+    this.handleFetchArticle = this.handleFetchArticle.bind(this)
+    this.handleSpeech = this.handleSpeech.bind(this)
   }
 
-  const onSearchClick = () => {
-    history.push('/search')
+  componentDidMount() {
+    this.handleFetchArticle()
   }
 
-  const { publication, chapter } = match.params
+  componentWillUnmount() {
+    const { loading, fetchArticleCancelled, clearArticle } = this.props
+    if (loading) {
+      fetchArticleCancelled()
+    } else {
+      clearArticle()
+    }
+  }
 
-  return (
-    <Article
-      publication={publication}
-      chapter={chapter}
-      onBackClick={onBackClick}
-      onSearchClick={onSearchClick}
-      {...props}
-    />
-  )
+  handleFetchArticle() {
+    const { match, fetchArticle } = this.props
+    const { publication, chapter } = match.params
+    fetchArticle(publication, chapter)
+  }
+
+  onBackClick() {
+    const { history, match } = this.props
+    const { publication } = match.params
+    history.push(`/content/${publication}`)
+  }
+
+  onSearchClick() {
+    this.props.history.push('/search')
+  }
+
+  handleSpeech(text, lang) {
+    if (speechService.isSpeechSynthesisSupported) {
+      speechService.speak(text, lang)
+    }
+  }
+
+  render() {
+    return (
+      <Article
+        onBackClick={this.onBackClick}
+        onSearchClick={this.onSearchClick}
+        onRetryClick={this.handleFetchArticle}
+        handleSpeech={this.handleSpeech}
+        {...this.props}
+      />
+    )
+  }
 }
 
 ArticleWrapper.propTypes = {
+  loading: PropTypes.bool,
+  fetchArticle: PropTypes.func.isRequired,
+  fetchArticleCancelled: PropTypes.func.isRequired,
+  clearArticle: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired
+}
+
+ArticleWrapper.defaultProps = {
+  loading: false
 }
 
 const mapStateToProps = (state) => ({

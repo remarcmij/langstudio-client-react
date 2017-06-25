@@ -24,8 +24,10 @@ ArticleListItem.propTypes = {
   onItemClick: PropTypes.func
 }
 
+const noop = () => undefined
+
 ArticleListItem.defaultProps = {
-  onItemClick: () => undefined
+  onItemClick: noop
 }
 
 export default ArticleListItem

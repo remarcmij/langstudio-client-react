@@ -4,37 +4,77 @@ import { connect } from 'react-redux'
 
 import ArticleList from '../components/ArticleList'
 import * as actions from '../actions/articleList'
-import {getTopics, getLoading, getError} from '../reducers/articleList'
+import { getTopics, getLoading, getError } from '../reducers/articleList'
 
-function ArticleListWrapper(props) {
-  const { history, match } = props
+class ArticleListWrapper extends React.Component {
 
-  const onBackClick = () => {
-    history.push('/')
+  constructor(props) {
+    super(props)
+    this.onBackClick = this.onBackClick.bind(this)
+    this.onSearchClick = this.onSearchClick.bind(this)
+    this.onItemClick = this.onItemClick.bind(this)
+    this.handleFetchArticleTopics = this.handleFetchArticleTopics.bind(this)
   }
 
-  const onSearchClick = () => {
-    history.push('/search')
+  componentDidMount() {
+    const { topics } = this.props
+    if (!topics) {
+      this.handleFetchArticleTopics()
+    }
   }
 
-  const onItemClick = (topic) => {
-    history.push(`/content/${topic.publication}/${topic.chapter}`)
+  componentWillUnmount() {
+    const { loading, fetchArticleTopicsCancelled } = this.props
+    if (loading) {
+      fetchArticleTopicsCancelled()
+    }
   }
 
-  return (
-    <ArticleList
-      publication={match.params.publication}
-      onBackClick={onBackClick}
-      onSearchClick={onSearchClick}
-      onItemClick={onItemClick}
-      {...props}
-    />
-  )
+  onBackClick() {
+    this.props.history.push('/')
+  }
+
+  onSearchClick() {
+    this.props.history.push('/search')
+  }
+
+  onItemClick(topic) {
+    this.props.history.push(`/content/${topic.publication}/${topic.chapter}`)
+  }
+
+  handleFetchArticleTopics() {
+    const { match, fetchArticleTopics } = this.props
+    const { publication } = match.params
+    fetchArticleTopics(publication)
+  }
+
+  render() {
+    const { publication } = this.props.match.params
+    return (
+      <ArticleList
+        publication={publication}
+        onBackClick={this.onBackClick}
+        onSearchClick={this.onSearchClick}
+        onItemClick={this.onItemClick}
+        onRetryClick={this.handleFetchArticleTopics}
+        {...this.props}
+      />
+    )
+  }
 }
 
 ArticleListWrapper.propTypes = {
+  topics: PropTypes.array,
+  loading: PropTypes.bool,
+  fetchArticleTopics: PropTypes.func.isRequired,
+  fetchArticleTopicsCancelled: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired
+}
+
+ArticleListWrapper.defaultProps = {
+  topics: null,
+  loading: false
 }
 
 const mapStateToProps = (state, { match }) => ({

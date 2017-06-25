@@ -3,8 +3,6 @@ import PropTypes from 'prop-types'
 import { ListItem } from 'material-ui/List'
 import Divider from 'material-ui/Divider'
 
-const noop = () => undefined
-
 function PublicationListItem({ topic, onItemClick }) {
   return (
     <div>
@@ -25,6 +23,8 @@ PublicationListItem.propTypes = {
   topic: PropTypes.object.isRequired,
   onItemClick: PropTypes.func
 }
+
+const noop = () => undefined
 
 PublicationListItem.defaultProps = {
   onItemClick: noop

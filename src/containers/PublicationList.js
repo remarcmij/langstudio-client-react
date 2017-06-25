@@ -6,28 +6,61 @@ import PublicationList from '../components/PublicationList'
 import * as actions from '../actions/publicationList'
 import { getTopics, getLoading, getError } from '../reducers/publicationList'
 
-function PublicationListWrapper(props) {
-  const { history } = props
+class PublicationListWrapper extends React.Component {
 
-  const onItemClick = (topic) => {
-    history.push(`/content/${topic.publication}`)
+  constructor(props) {
+    super(props)
+    this.onItemClick = this.onItemClick.bind(this)
+    this.onSearchClick = this.onSearchClick.bind(this)
   }
 
-  const onSearchClick = () => {
-    history.push('/search')
+  componentDidMount() {
+    const { topics, fetchPublicationTopics } = this.props
+    if (!topics) {
+      fetchPublicationTopics()
+    }
   }
 
-  return (
-    <PublicationList
-      onItemClick={onItemClick}
-      onSearchClick={onSearchClick}
-      {...props}
-    />
-  )
+  componentWillUnmount() {
+    const { loading, fetchPublicationTopicsCancelled } = this.props
+    if (loading) {
+      fetchPublicationTopicsCancelled()
+    }
+  }
+
+  onItemClick(topic) {
+    this.props.history.push(`/content/${topic.publication}`)
+  }
+
+  onSearchClick() {
+    this.props.history.push('/search')
+  }
+
+  render() {
+    return (
+      <PublicationList
+        onItemClick={this.onItemClick}
+        onSearchClick={this.onSearchClick}
+        onRetryClick={this.props.fetchPublicationTopics}
+        {...this.props}
+      />
+    )
+  }
 }
 
 PublicationListWrapper.propTypes = {
+  topics: PropTypes.array,
+  loading: PropTypes.bool,
+  error: PropTypes.object,
+  fetchPublicationTopics: PropTypes.func.isRequired,
+  fetchPublicationTopicsCancelled: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired
+}
+
+PublicationListWrapper.defaultProps = {
+  topics: null,
+  loading: false,
+  error: null
 }
 
 const mapStateToProps = (state) => ({

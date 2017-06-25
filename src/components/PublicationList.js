@@ -6,47 +6,14 @@ import MainAppBar from './MainAppBar'
 import PublicationListItem from './PublicationListItem'
 import NetworkError from './NetworkError'
 
-const noop = () => undefined
+function PublicationList(props) {
 
-export default class PublicationList extends React.Component {
+  const { topics, error, onRetryClick, onItemClick, onSearchClick } = props
 
-  static propTypes = {
-    topics: PropTypes.array,
-    loading: PropTypes.bool,
-    error: PropTypes.object,
-    fetchPublicationTopics: PropTypes.func.isRequired,
-    fetchPublicationTopicsCancelled: PropTypes.func.isRequired,
-    onItemClick: PropTypes.func,
-    onSearchClick: PropTypes.func
-  }
-
-  static defaultProps = {
-    topics: null,
-    loading: false,
-    error: null,
-    onItemClick: noop,
-    onSearchClick: noop
-  }
-
-  componentDidMount() {
-    const { topics, fetchPublicationTopics } = this.props
-    if (!topics) {
-      fetchPublicationTopics()
-    }
-  }
-
-  componentWillUnmount() {
-    const { loading, fetchPublicationTopicsCancelled } = this.props
-    if (loading) {
-      fetchPublicationTopicsCancelled()
-    }
-  }
-
-  renderList() {
-    const { topics, error, fetchPublicationTopics, onItemClick } = this.props
+  const renderList = () => {
     if (error) {
       return (
-        <NetworkError error={error} onRetryClick={fetchPublicationTopics} />
+        <NetworkError error={error} onRetryClick={onRetryClick} />
       )
     }
     if (!topics) {
@@ -60,17 +27,35 @@ export default class PublicationList extends React.Component {
     ))
   }
 
-  render() {
-    return (
-      <div>
-        <MainAppBar
-          title="TaalMap Indonesisch"
-          onSearchClick={this.props.onSearchClick}
-        />
-        <List>
-          {this.renderList()}
-        </List>
-      </div>
-    )
-  }
+  return (
+    <div>
+      <MainAppBar
+        title="TaalMap Indonesisch"
+        onSearchClick={onSearchClick}
+      />
+      <List>
+        {renderList()}
+      </List>
+    </div>
+  )
 }
+
+PublicationList.propTypes = {
+  topics: PropTypes.array,
+  error: PropTypes.object,
+  onItemClick: PropTypes.func,
+  onSearchClick: PropTypes.func,
+  onRetryClick: PropTypes.func
+}
+
+const noop = () => undefined
+
+PublicationList.defaultProps = {
+  topics: null,
+  error: null,
+  onItemClick: noop,
+  onSearchClick: noop,
+  onRetryClick: noop
+}
+
+export default PublicationList

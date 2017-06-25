@@ -23,8 +23,10 @@ NetworkError.propTypes = {
   onRetryClick: PropTypes.func
 }
 
+const noop = () => undefined
+
 NetworkError.defaultProps = {
-  onRetryClick: () => undefined
+  onRetryClick: noop
 }
 
 export default NetworkError

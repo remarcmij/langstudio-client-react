@@ -6,50 +6,14 @@ import ChildAppBar from './ChildAppBar'
 import ArticleListItem from './ArticleListItem'
 import NetworkError from './NetworkError'
 
-const noop = () => undefined
+function ArticleList(props) {
 
-export default class ArticleList extends React.Component {
+  const { topics, error, onRetryClick, onItemClick, onBackClick, onSearchClick } = props
 
-  static propTypes = {
-    publication: PropTypes.string.isRequired,
-    topics: PropTypes.array,
-    loading: PropTypes.bool,
-    error: PropTypes.object,
-    fetchArticleTopics: PropTypes.func.isRequired,
-    fetchArticleTopicsCancelled: PropTypes.func.isRequired,
-    onBackClick: PropTypes.func,
-    onSearchClick: PropTypes.func,
-    onItemClick: PropTypes.func
-  }
-
-  static defaultProps = {
-    topics: null,
-    loading: false,
-    error: null,
-    onBackClick: noop,
-    onSearchClick: noop,
-    onItemClick: noop
-  }
-
-  componentDidMount() {
-    if (!this.topics) {
-      const { publication, fetchArticleTopics } = this.props
-      fetchArticleTopics(publication)
-    }
-  }
-
-  componentWillUnmount() {
-    const { loading, fetchArticleTopicsCancelled } = this.props
-    if (loading) {
-      fetchArticleTopicsCancelled()
-    }
-  }
-
-  renderList(topics) {
-    const { error, fetchArticleTopics, onItemClick } = this.props
+  const renderList = () => {
     if (error) {
       return (
-        <NetworkError error={error} onRetryClick={fetchArticleTopics} />
+        <NetworkError error={error} onRetryClick={onRetryClick} />
       )
     }
     if (!topics) {
@@ -63,7 +27,7 @@ export default class ArticleList extends React.Component {
     ))
   }
 
-  getDir(topics) {
+  const getDir = () => {
     if (!topics) {
       return 'ltr'
     }
@@ -71,19 +35,38 @@ export default class ArticleList extends React.Component {
     return index.baseLang.startsWith('ar') || index.targetLang.startsWith('ar') ? 'rtl' : 'ltr'
   }
 
-  render() {
-    const { topics, onBackClick, onSearchClick } = this.props
-    return (
-      <div>
-        <ChildAppBar
-          title={topics ? topics[0].title : null}
-          onBackClick={onBackClick}
-          onSearchClick={onSearchClick}
-        />
-        <List dir={this.getDir(topics)}>
-          {this.renderList(topics)}
-        </List>
-      </div>
-    )
-  }
+  return (
+    <div>
+      <ChildAppBar
+        title={topics ? topics[0].title : null}
+        onBackClick={onBackClick}
+        onSearchClick={onSearchClick}
+      />
+      <List dir={getDir(topics)}>
+        {renderList(topics)}
+      </List>
+    </div>
+  )
 }
+
+ArticleList.propTypes = {
+  topics: PropTypes.array,
+  error: PropTypes.object,
+  onBackClick: PropTypes.func,
+  onSearchClick: PropTypes.func,
+  onItemClick: PropTypes.func,
+  onRetryClick: PropTypes.func
+}
+
+const noop = () => undefined
+
+ArticleList.defaultProps = {
+  topics: null,
+  error: null,
+  onBackClick: noop,
+  onSearchClick: noop,
+  onItemClick: noop,
+  onRetryClick: noop
+}
+
+export default ArticleList

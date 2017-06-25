@@ -3,24 +3,7 @@ import PropTypes from 'prop-types'
 import AutoComplete from 'material-ui/AutoComplete'
 import MenuItem from 'material-ui/MenuItem'
 
-const noop = () => undefined
-
-export default class SearchBox extends React.Component {
-
-  static propTypes = {
-    items: PropTypes.array,
-    loading: PropTypes.bool,
-    error: PropTypes.object,
-    onItemSelected: PropTypes.func,
-    fetchAutoCompleteList: PropTypes.func.isRequired
-  }
-
-  static defaultProps = {
-    items: null,
-    loading: false,
-    error: null,
-    onItemSelected: noop
-  }
+class SearchBox extends React.Component {
 
   constructor(props) {
     super(props)
@@ -75,7 +58,7 @@ export default class SearchBox extends React.Component {
     }
   }
 
-  render () {
+  render() {
     // animated needs to be false for Chrome 56+
     // see: https://developers.google.com/web/updates/2017/01/scrolling-intervention
     return (
@@ -94,3 +77,21 @@ export default class SearchBox extends React.Component {
   }
 }
 
+SearchBox.propTypes = {
+  items: PropTypes.array,
+  loading: PropTypes.bool,
+  error: PropTypes.object,
+  onItemSelected: PropTypes.func,
+  fetchAutoCompleteList: PropTypes.func.isRequired
+}
+
+const noop = () => undefined
+
+SearchBox.defaultProps = {
+  items: null,
+  loading: false,
+  error: null,
+  onItemSelected: noop
+}
+
+export default SearchBox

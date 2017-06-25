@@ -4,8 +4,6 @@ import AppBar from 'material-ui/AppBar'
 import IconButton from 'material-ui/IconButton'
 import FontIcon from 'material-ui/FontIcon'
 
-const noop = () => undefined
-
 function MainAppBar({ title, onSearchClick }) {
   return (
     <AppBar
@@ -24,6 +22,8 @@ MainAppBar.propTypes = {
   title: PropTypes.string.isRequired,
   onSearchClick: PropTypes.func
 }
+
+const noop = () => undefined
 
 MainAppBar.defaultProps = {
   onSearchClick: noop

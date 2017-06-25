@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import { BrowserRouter as Router } from 'react-router-dom'
 
-export default function Root({ store, routes }) {
+function Root({ store, routes }) {
   return (
     <Provider store={store}>
       <MuiThemeProvider>
@@ -20,3 +20,5 @@ Root.propTypes = {
   store: PropTypes.object.isRequired,
   routes: PropTypes.object.isRequired
 }
+
+export default Root
