@@ -6,6 +6,8 @@ import MainAppBar from './MainAppBar'
 import PublicationListItem from './PublicationListItem'
 import NetworkError from './NetworkError'
 
+const noop = () => undefined
+
 export default class PublicationList extends React.Component {
 
   static propTypes = {
@@ -14,19 +16,16 @@ export default class PublicationList extends React.Component {
     error: PropTypes.object,
     fetchPublicationTopics: PropTypes.func.isRequired,
     fetchPublicationTopicsCancelled: PropTypes.func.isRequired,
-    history: PropTypes.object.isRequired
+    onItemClick: PropTypes.func,
+    onSearchClick: PropTypes.func
   }
 
   static defaultProps = {
     topics: null,
     loading: false,
-    error: null
-  }
-
-  constructor(props) {
-    super(props)
-    this.onItemClick = this.onItemClick.bind(this)
-    this.onSearchClick = this.onSearchClick.bind(this)
+    error: null,
+    onItemClick: noop,
+    onSearchClick: noop
   }
 
   componentDidMount() {
@@ -43,16 +42,8 @@ export default class PublicationList extends React.Component {
     }
   }
 
-  onItemClick(topic) {
-    this.props.history.push(`/content/${topic.publication}`)
-  }
-
-  onSearchClick() {
-    this.props.history.push(`/search`)
-  }
-
   renderList() {
-    const { topics, error, fetchPublicationTopics } = this.props
+    const { topics, error, fetchPublicationTopics, onItemClick } = this.props
     if (error) {
       return (
         <NetworkError error={error} onRetryClick={fetchPublicationTopics} />
@@ -65,7 +56,7 @@ export default class PublicationList extends React.Component {
       <PublicationListItem
         key={topic._id}
         topic={topic}
-        onItemClick={this.onItemClick} />
+        onItemClick={onItemClick} />
     ))
   }
 
@@ -74,7 +65,7 @@ export default class PublicationList extends React.Component {
       <div>
         <MainAppBar
           title="TaalMap Indonesisch"
-          onSearchClick={this.onSearchClick}
+          onSearchClick={this.props.onSearchClick}
         />
         <List>
           {this.renderList()}

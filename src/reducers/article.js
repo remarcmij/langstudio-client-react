@@ -2,17 +2,12 @@ import * as actions from '../actions/article'
 
 const initialState = {
   article: null,
-  publication: null,
-  chapter: null,
   loading: false,
   error: null
 }
 
-
-const fetch = (state, action) => ({
+const fetch = () => ({
   article: null,
-  publication: action.publication,
-  chapter: action.chapter,
   loading: true,
   error: null
 })

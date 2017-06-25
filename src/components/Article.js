@@ -7,29 +7,33 @@ import NetworkError from './NetworkError'
 import speechService from '../services/speechService'
 import './Article.css'
 
+const noop = () => undefined
+
 export default class Article extends React.Component {
 
   static propTypes = {
+    publication: PropTypes.string.isRequired,
+    chapter: PropTypes.string.isRequired,
     article: PropTypes.object,
     error: PropTypes.object,
     loading: PropTypes.bool,
     fetchArticle: PropTypes.func.isRequired,
     fetchArticleCancelled: PropTypes.func.isRequired,
     clearArticle: PropTypes.func.isRequired,
-    history: PropTypes.object.isRequired,
-    match: PropTypes.object.isRequired
+    onBackClick: PropTypes.func,
+    onSearchClick: PropTypes.func
   }
 
   static defaultProps = {
     article: null,
     loading: false,
-    error: null
+    error: null,
+    onBackClick: noop,
+    onSearchClick: noop
   }
 
   constructor(props) {
     super(props)
-    this.onBackClick = this.onBackClick.bind(this)
-    this.onSearchClick = this.onSearchClick.bind(this)
     this.onTextClick = this.onTextClick.bind(this)
     this.fetchArticle = this.fetchArticle.bind(this)
   }
@@ -47,14 +51,6 @@ export default class Article extends React.Component {
     }
   }
 
-  onBackClick = () => {
-    this.props.history.push(`/content/${this.props.match.params.publication}`)
-  }
-
-  onSearchClick = () => {
-    this.props.history.push(`/search`)
-  }
-
   onTextClick(ev) {
     if (speechService.isSpeechSynthesisSupported) {
       if (ev.target.tagName === 'SPAN') {
@@ -68,7 +64,7 @@ export default class Article extends React.Component {
   }
 
   fetchArticle() {
-    const { publication, chapter } = this.props.match.params
+    const { publication, chapter } = this.props
     this.props.fetchArticle(publication, chapter)
   }
 
@@ -105,13 +101,13 @@ export default class Article extends React.Component {
   }
 
   render() {
-    const { article } = this.props
+    const { article, onBackClick, onSearchClick } = this.props
     return (
       <div>
         <ChildAppBar
           title={article ? article.title : null}
-          onBackClick={this.onBackClick}
-          onSearchClick={this.onSearchClick}
+          onBackClick={onBackClick}
+          onSearchClick={onSearchClick}
         />
         {this.renderArticleContent(article)}
       </div>

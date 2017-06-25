@@ -6,40 +6,40 @@ import ChildAppBar from './ChildAppBar'
 import ArticleListItem from './ArticleListItem'
 import NetworkError from './NetworkError'
 
+const noop = () => undefined
+
 export default class ArticleList extends React.Component {
 
   static propTypes = {
+    publication: PropTypes.string.isRequired,
     topics: PropTypes.object,
     loading: PropTypes.bool,
     error: PropTypes.object,
     fetchArticleTopics: PropTypes.func.isRequired,
     fetchArticleTopicsCancelled: PropTypes.func.isRequired,
-    history: PropTypes.object.isRequired,
-    match: PropTypes.object.isRequired
+    onBackClick: PropTypes.func,
+    onSearchClick: PropTypes.func,
+    onItemClick: PropTypes.func
   }
 
   static defaultProps = {
     topics: null,
     loading: false,
-    error: null
-  }
-
-  constructor(props) {
-    super(props)
-    this.onBackClick = this.onBackClick.bind(this)
-    this.onSearchClick = this.onSearchClick.bind(this)
+    error: null,
+    onBackClick: noop,
+    onSearchClick: noop,
+    onItemClick: noop
   }
 
   get topics() {
-    const { topics } = this.props
-    const { publication } = this.props.match.params
+    const { topics, publication } = this.props
     return topics[publication]
   }
 
   componentDidMount() {
     if (!this.topics) {
-      const { publication } = this.props.match.params
-      this.props.fetchArticleTopics(publication)
+      const { publication, fetchArticleTopics } = this.props
+      fetchArticleTopics(publication)
     }
   }
 
@@ -50,20 +50,8 @@ export default class ArticleList extends React.Component {
     }
   }
 
-  onBackClick() {
-    this.props.history.push('/')
-  }
-
-  onSearchClick() {
-    this.props.history.push(`/search`)
-  }
-
-  onItemClick(topic) {
-    this.props.history.push(`/content/${topic.publication}/${topic.chapter}`)
-  }
-
   renderList(topics) {
-    const { error, fetchArticleTopics } = this.props
+    const { error, fetchArticleTopics, onItemClick } = this.props
     if (error) {
       return (
         <NetworkError error={error} onRetryClick={fetchArticleTopics} />
@@ -76,7 +64,7 @@ export default class ArticleList extends React.Component {
       <ArticleListItem
         key={topic._id}
         topic={topic}
-        onItemClick={() => this.onItemClick(topic)} />
+        onItemClick={() => onItemClick(topic)} />
     ))
   }
 
@@ -90,12 +78,13 @@ export default class ArticleList extends React.Component {
 
   render() {
     const topics = this.topics
+    const { onBackClick, onSearchClick } = this.props
     return (
       <div>
         <ChildAppBar
           title={topics ? topics[0].title : null}
-          onBackClick={this.onBackClick}
-          onSearchClick={this.onSearchClick}
+          onBackClick={onBackClick}
+          onSearchClick={onSearchClick}
         />
         <List dir={this.getDir(topics)}>
           {this.renderList(topics)}
