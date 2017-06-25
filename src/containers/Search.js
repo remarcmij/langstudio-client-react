@@ -1,11 +1,11 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 // import { connect } from 'react-redux'
 
 import SearchAppBar from '../components/SearchAppBar'
 import SearchBox from './SearchBox'
 
-class SearchPageContainer extends Component {
+export default class SearchPage extends React.Component {
 
   static propTypes = {
     match: PropTypes.object.isRequired,
@@ -37,4 +37,3 @@ class SearchPageContainer extends Component {
   }
 }
 
-export default SearchPageContainer

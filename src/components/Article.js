@@ -1,10 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import Paper from 'material-ui/Paper'
 
 import ChildAppBar from './ChildAppBar'
-import ArticleContent from './ArticleContent'
 import NetworkError from './NetworkError'
 import speechService from '../services/speechService'
+import './Article.css'
 
 export default class Article extends React.Component {
 
@@ -33,8 +34,8 @@ export default class Article extends React.Component {
     this.fetchArticle = this.fetchArticle.bind(this)
   }
 
- componentDidMount() {
-   this.fetchArticle()
+  componentDidMount() {
+    this.fetchArticle()
   }
 
   componentWillUnmount() {
@@ -71,8 +72,14 @@ export default class Article extends React.Component {
     this.props.fetchArticle(publication, chapter)
   }
 
-  renderArticleContent() {
-    const {article, error} = this.props
+  getDir(article) {
+    const { baseLang, targetLang } = article._topic
+    return baseLang.startsWith('ar') || targetLang.startsWith('ar') ? 'rtl' : 'ltr'
+  }
+
+  renderArticleContent(article) {
+    const { error } = this.props
+
     if (error) {
       return (
         <NetworkError error={error} onRetryClick={this.fetchArticle} />
@@ -81,13 +88,24 @@ export default class Article extends React.Component {
     if (!article) {
       return null
     }
+
+    const { htmlText } = article
     return (
-      <ArticleContent article={article} onTextClick={this.onTextClick} />
+      <div className="article">
+        <Paper zDepth={2}>
+          <article
+            className="markdown-body"
+            dir={this.getDir(article)}
+            onClick={this.onTextClick}
+            dangerouslySetInnerHTML={{ __html: htmlText }}
+          ></article>
+        </Paper>
+      </div>
     )
   }
 
   render() {
-    const {article} = this.props
+    const { article } = this.props
     return (
       <div>
         <ChildAppBar
@@ -95,7 +113,7 @@ export default class Article extends React.Component {
           onBackClick={this.onBackClick}
           onSearchClick={this.onSearchClick}
         />
-        {this.renderArticleContent()}
+        {this.renderArticleContent(article)}
       </div>
     )
   }

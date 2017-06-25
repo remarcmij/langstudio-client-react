@@ -9,7 +9,7 @@ import NetworkError from './NetworkError'
 export default class ArticleList extends React.Component {
 
   static propTypes = {
-    topics: PropTypes.array,
+    topics: PropTypes.object,
     loading: PropTypes.bool,
     error: PropTypes.object,
     fetchArticleTopics: PropTypes.func.isRequired,
