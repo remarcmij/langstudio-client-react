@@ -3,27 +3,29 @@ import PropTypes from 'prop-types'
 import { ListItem } from 'material-ui/List'
 import Divider from 'material-ui/Divider'
 
-const ArticleListItem = ({ article, onTouchTap }) => (
-  <div>
-    <ListItem
-      onTouchTap={() => onTouchTap(article)}
-      primaryText={article.title}
-      secondaryText={
-        <p>{article.subtitle}</p>
-      }
-      secondaryTextLines={2}
-    />
-    <Divider />
-  </div>
-)
+function ArticleListItem({ topic, onItemClick }) {
+  return (
+    <div>
+      <ListItem
+        onTouchTap={() => onItemClick(topic)}
+        primaryText={topic.title}
+        secondaryText={
+          <p>{topic.subtitle}</p>
+        }
+        secondaryTextLines={2}
+      />
+      <Divider />
+    </div>
+  )
+}
 
 ArticleListItem.propTypes = {
-  article: PropTypes.object.isRequired,
-  onTouchTap: PropTypes.func
+  topic: PropTypes.object.isRequired,
+  onItemClick: PropTypes.func
 }
 
 ArticleListItem.defaultProps = {
-  onTouchTap: () => undefined
+  onItemClick: () => undefined
 }
 
 export default ArticleListItem

@@ -6,7 +6,7 @@ import FontIcon from 'material-ui/FontIcon'
 
 const noop = () => undefined
 
-const MainAppBar = ({ title, onSearchClick }) => {
+function MainAppBar({ title, onSearchClick }) {
   return (
     <AppBar
       className="AppBar"

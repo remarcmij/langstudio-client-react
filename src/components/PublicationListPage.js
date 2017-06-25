@@ -8,7 +8,7 @@ import NetworkError from './NetworkError'
 
 const noop = () => undefined
 
-const PublicationListPage = ({ title, publications, error, onRetryClick, onItemClick, onSearchClick }) => {
+function PublicationListPage({ title, topics, error, onRetryClick, onItemClick, onSearchClick }) {
 
   const renderList = () => {
     if (error) {
@@ -16,13 +16,13 @@ const PublicationListPage = ({ title, publications, error, onRetryClick, onItemC
         <NetworkError error={error} onRetryClick={onRetryClick} />
       )
     }
-    if (!publications) {
+    if (!topics) {
       return null
     }
-    return publications.map(publication => (
+    return topics.map(topic => (
       <PublicationListItem
-        key={publication._id}
-        publication={publication}
+        key={topic._id}
+        topic={topic}
         onItemClick={onItemClick} />
     ))
   }
@@ -41,8 +41,8 @@ const PublicationListPage = ({ title, publications, error, onRetryClick, onItemC
 }
 
 PublicationListPage.propTypes = {
-  title: PropTypes.string.isRequired,
-  publications: PropTypes.array,
+  title: PropTypes.string,
+  topics: PropTypes.array,
   error: PropTypes.object,
   onRetryClick: PropTypes.func,
   onItemClick: PropTypes.func,
@@ -50,6 +50,9 @@ PublicationListPage.propTypes = {
 }
 
 PublicationListPage.defaultProps = {
+  title: '',
+  topics: null,
+  error: null,
   onRetryClick: noop,
   onItemClick: noop,
   onSearchClick: noop

@@ -4,9 +4,9 @@ import { Card, CardActions, CardHeader } from 'material-ui/Card'
 import FlatButton from 'material-ui/FlatButton'
 import './NetworkError.css'
 
-const NetworkError = ({ error, onRetryClick }) => {
+function NetworkError({ error, onRetryClick }) {
   return (
-    <Card className="network-error--card">
+    <Card className="network-error__card">
       <CardHeader
         title="A network error occurred"
         subtitle={'Error: ' + error.message}

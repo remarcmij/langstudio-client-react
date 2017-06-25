@@ -8,14 +8,22 @@ import SearchBox from './SearchBox'
 class SearchPageContainer extends Component {
 
   static propTypes = {
-    match: PropTypes.object,
-    history: PropTypes.object
+    match: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired
   }
 
   constructor(props) {
     super(props)
     this.onBackClick = this.onBackClick.bind(this)
     this.onItemSelected = this.onItemSelected.bind(this)
+  }
+
+  onBackClick() {
+    this.props.history.goBack()
+  }
+
+  onItemSelected(item) {
+    console.log(item)
   }
 
   render() {
@@ -26,14 +34,6 @@ class SearchPageContainer extends Component {
         </SearchAppBar>
       </div>
     )
-  }
-
-  onBackClick() {
-    this.props.history.goBack()
-  }
-
-  onItemSelected(item) {
-    console.log(item)
   }
 }
 

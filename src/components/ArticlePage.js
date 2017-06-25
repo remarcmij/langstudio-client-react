@@ -7,7 +7,7 @@ import NetworkError from './NetworkError'
 
 const noop = () => undefined
 
-const ArticlePage = ({ article, error, onTextClick, onSearchClick, onBackClick, onRetryClick }) => {
+function ArticlePage({ article, error, onTextClick, onSearchClick, onBackClick, onRetryClick }) {
 
   const renderArticleContent = () => {
     if (error) {
@@ -45,11 +45,12 @@ ArticlePage.propTypes = {
 }
 
 ArticlePage.defaultProps = {
+  article: null,
   error: null,
   onTextClick: noop,
   onSearchClick: noop,
   onBackClick: noop,
-  onRetryClick: noop,
+  onRetryClick: noop
 }
 
 export default ArticlePage

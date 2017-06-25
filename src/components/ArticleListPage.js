@@ -8,7 +8,7 @@ import NetworkError from './NetworkError'
 
 const noop = () => undefined
 
-const ArticleListPage = ({ articles, error, onRetryClick, onItemClick, onSearchClick, onBackClick }) => {
+function ArticleListPage({ topics, error, onRetryClick, onItemClick, onSearchClick, onBackClick }) {
 
   const renderList = () => {
     if (error) {
@@ -16,41 +16,41 @@ const ArticleListPage = ({ articles, error, onRetryClick, onItemClick, onSearchC
         <NetworkError error={error} onRetryClick={onRetryClick} />
       )
     }
-    if (!articles) {
+    if (!topics) {
       return null
     }
-    return articles.slice(1).map(article => (
+    return topics.slice(1).map(topic => (
       <ArticleListItem
-        key={article._id}
-        article={article}
-        onTouchTap={onItemClick} />
+        key={topic._id}
+        topic={topic}
+        onItemClick={onItemClick} />
     ))
   }
 
   const getDir = () => {
-    if (!articles) {
+    if (!topics) {
       return 'ltr'
     }
-    const index = articles[0]
+    const index = topics[0]
     return index.baseLang.startsWith('ar') || index.targetLang.startsWith('ar') ? 'rtl' : 'ltr'
   }
 
   return (
     <div>
       <ChildAppBar
-        title={articles ? articles[0].title : null}
+        title={topics ? topics[0].title : null}
         onBackClick={onBackClick}
         onSearchClick={onSearchClick}
       />
-      <List dir={getDir(articles)}>
-        {renderList(articles)}
+      <List dir={getDir(topics)}>
+        {renderList(topics)}
       </List>
     </div>
   )
 }
 
 ArticleListPage.propTypes = {
-  articles: PropTypes.array,
+  topics: PropTypes.array,
   error: PropTypes.object,
   onRetryClick: PropTypes.func,
   onItemClick: PropTypes.func,
@@ -59,7 +59,7 @@ ArticleListPage.propTypes = {
 }
 
 ArticleListPage.defaultProps = {
-  articles: null,
+  topics: null,
   error: null,
   onRetryClick: noop,
   onItemClick: noop,

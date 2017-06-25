@@ -6,7 +6,7 @@ import FontIcon from 'material-ui/FontIcon'
 
 const noop = () => undefined
 
-const ChildAppBar = ({ title, onBackClick, onSearchClick }) => {
+function ChildAppBar({ title, onBackClick, onSearchClick }) {
   return (
     <AppBar
       className="AppBar"
@@ -32,6 +32,7 @@ ChildAppBar.propTypes = {
 }
 
 ChildAppBar.defaultProps = {
+  title: '',
   onBackClick: noop,
   onSearchClick: noop
 }

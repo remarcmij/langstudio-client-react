@@ -6,14 +6,14 @@ import './ArticleContent.css'
 
 const noop = () => undefined
 
-const ArticleContent = ({article, onTextClick}) => {
+function ArticleContent({article, onTextClick}) {
 
-  function getDir() {
+  const { htmlText } = article
+
+  const getDir = () => {
     const { baseLang, targetLang } = article._topic
     return baseLang.startsWith('ar') || targetLang.startsWith('ar') ? 'rtl' : 'ltr'
   }
-
-  const { htmlText } = article
 
   return (
     <div className="article-content">

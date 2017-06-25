@@ -9,12 +9,18 @@ import * as selectors from '../selectors/publicationList'
 class PublicationListContainer extends Component {
 
   static propTypes = {
-    publications: PropTypes.array,
+    topics: PropTypes.array,
     loading: PropTypes.bool,
     error: PropTypes.object,
-    fetchPublicationList: PropTypes.func,
-    fetchPublicationListCancelled: PropTypes.func,
-    history: PropTypes.object
+    fetchPublicationList: PropTypes.func.isRequired,
+    fetchPublicationListCancelled: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired
+  }
+
+  static defaultProps = {
+    topics: null,
+    loading: false,
+    error: null
   }
 
   constructor(props) {
@@ -25,8 +31,8 @@ class PublicationListContainer extends Component {
   }
 
   componentDidMount() {
-    const { publications, fetchPublicationList } = this.props
-    if (!publications) {
+    const { topics, fetchPublicationList } = this.props
+    if (!topics) {
       fetchPublicationList()
     }
   }
@@ -36,20 +42,6 @@ class PublicationListContainer extends Component {
     if (loading) {
       fetchPublicationListCancelled()
     }
-  }
-
-  render() {
-    const { publications, error } = this.props
-    return (
-      <PublicationListPage
-        title="TaalMap Indonesisch"
-        publications={publications}
-        error={error}
-        onRetryClick={this.onRetryClick}
-        onItemClick={this.onItemClick}
-        onSearchClick={this.onSearchClick}
-      />
-    )
   }
 
   onRetryClick() {
@@ -63,10 +55,24 @@ class PublicationListContainer extends Component {
   onSearchClick() {
     this.props.history.push(`/search`)
   }
+
+  render() {
+    const { topics, error } = this.props
+    return (
+      <PublicationListPage
+        title="TaalMap Indonesisch"
+        topics={topics}
+        error={error}
+        onRetryClick={this.onRetryClick}
+        onItemClick={this.onItemClick}
+        onSearchClick={this.onSearchClick}
+      />
+    )
+  }
 }
 
 const mapStateToProps = (state) => ({
-  publications: selectors.getPublications(state),
+  topics: selectors.getTopics(state),
   loading: selectors.getLoading(state),
   error: selectors.getError(state)
 })

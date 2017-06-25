@@ -15,11 +15,19 @@ class ArticleContainer extends Component {
     chapter: PropTypes.string,
     loading: PropTypes.bool,
     error: PropTypes.object,
-    fetchArticle: PropTypes.func,
-    fetchArticleCancelled: PropTypes.func,
-    clearArticle: PropTypes.func,
-    match: PropTypes.object,
-    history: PropTypes.object
+    fetchArticle: PropTypes.func.isRequired,
+    fetchArticleCancelled: PropTypes.func.isRequired,
+    clearArticle: PropTypes.func.isRequired,
+    match: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired
+  }
+
+  static defaultProps = {
+    article: null,
+    publication: null,
+    chapter: null,
+    loading: false,
+    error: null
   }
 
   constructor(props) {
@@ -49,20 +57,6 @@ class ArticleContainer extends Component {
     fetchArticle(publication, chapter)
   }
 
-  render() {
-    const { article, error } = this.props
-    return (
-      <ArticlePage
-        article={article}
-        error={error}
-        onTextClick={this.onTextClick}
-        onRetryClick={this.onRetryClick}
-        onSearchClick={this.onSearchClick}
-        onBackClick={this.onBackClick}
-      />
-    )
-  }
-
   onTextClick(ev) {
     if (speechService.isSpeechSynthesisSupported) {
       if (ev.target.tagName === 'SPAN') {
@@ -81,6 +75,20 @@ class ArticleContainer extends Component {
 
   onSearchClick = () => {
     this.props.history.push(`/search`)
+  }
+
+  render() {
+    const { article, error } = this.props
+    return (
+      <ArticlePage
+        article={article}
+        error={error}
+        onTextClick={this.onTextClick}
+        onRetryClick={this.onRetryClick}
+        onSearchClick={this.onSearchClick}
+        onBackClick={this.onBackClick}
+      />
+    )
   }
 }
 

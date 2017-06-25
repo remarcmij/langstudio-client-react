@@ -8,22 +8,38 @@ import * as actions from '../actions/autoCompleteList'
 import * as selectors from '../selectors/autoCompleteList'
 import './SearchBox.css'
 
+const noop = () => undefined
+
 class SearchBox extends Component {
 
   static propTypes = {
-    onItemSelected: PropTypes.func,
-    fetchAutoCompleteList: PropTypes.func,
     items: PropTypes.array,
     loading: PropTypes.bool,
-    error: PropTypes.object
+    error: PropTypes.object,
+    onItemSelected: PropTypes.func,
+    fetchAutoCompleteList: PropTypes.func.isRequired
   }
 
   static defaultProps = {
-    onItemSelected: () => undefined
+    items: null,
+    loading: false,
+    error: null,
+    onItemSelected: noop
   }
 
-  state = {
-    dataSource: []
+  constructor(props) {
+    super(props)
+    this.onUpdateInput = this.onUpdateInput.bind(this)
+    this.onNewRequest = this.onNewRequest.bind(this)
+    this.state = {
+      dataSource: []
+    }
+  }
+
+  componentDidMount() {
+    setTimeout(() => {
+      document.querySelector('.search-box__auto-complete input').focus()
+    }, 100)
   }
 
   componentWillReceiveProps({ items, loading, error }) {
@@ -44,25 +60,7 @@ class SearchBox extends Component {
     this.setState({ dataSource })
   }
 
-  render() {
-    // animated needs to be false for Chrome 56+
-    // see: https://developers.google.com/web/updates/2017/01/scrolling-intervention
-    return (
-      <div>
-        <AutoComplete
-          className="search-box--auto-complete"
-          hintText="Search"
-          animated={false}
-          filter={AutoComplete.noFilter}
-          dataSource={this.state.dataSource}
-          onUpdateInput={this.onUpdateInput}
-          onNewRequest={this.onNewRequest}
-        />
-      </div>
-    )
-  }
-
-  onUpdateInput = (term) => {
+  onUpdateInput(term) {
     term = term.trim()
     if (!term) {
       return this.setState({ dataSource: [] })
@@ -70,7 +68,7 @@ class SearchBox extends Component {
     this.props.fetchAutoCompleteList(term)
   }
 
-  onNewRequest = (chosenRequest, index) => {
+  onNewRequest(chosenRequest, index) {
     const { dataSource } = this.state
     const { onItemSelected } = this.props
     if (index === -1) {
@@ -80,6 +78,24 @@ class SearchBox extends Component {
     } else {
       onItemSelected(chosenRequest)
     }
+  }
+
+  render() {
+    // animated needs to be false for Chrome 56+
+    // see: https://developers.google.com/web/updates/2017/01/scrolling-intervention
+    return (
+      <div>
+        <AutoComplete
+          className="search-box__auto-complete"
+          hintText="Search"
+          animated={false}
+          filter={AutoComplete.noFilter}
+          dataSource={this.state.dataSource}
+          onUpdateInput={this.onUpdateInput}
+          onNewRequest={this.onNewRequest}
+        />
+      </div>
+    )
   }
 }
 

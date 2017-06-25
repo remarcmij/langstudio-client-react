@@ -5,22 +5,24 @@ import Divider from 'material-ui/Divider'
 
 const noop = () => undefined
 
-const PublicationListItem = ({ publication, onItemClick }) => (
-  <div>
-    <ListItem
-      onTouchTap={() => onItemClick(publication)}
-      primaryText={publication.title}
-      secondaryText={
-        <p>{publication.subtitle}</p>
-      }
-      secondaryTextLines={2}
-    />
-    <Divider />
-  </div>
-)
+function PublicationListItem({ topic, onItemClick }) {
+  return (
+    <div>
+      <ListItem
+        onTouchTap={() => onItemClick(topic)}
+        primaryText={topic.title}
+        secondaryText={
+          <p>{topic.subtitle}</p>
+        }
+        secondaryTextLines={2}
+      />
+      <Divider />
+    </div>
+  )
+}
 
 PublicationListItem.propTypes = {
-  publication: PropTypes.object.isRequired,
+  topic: PropTypes.object.isRequired,
   onItemClick: PropTypes.func
 }
 

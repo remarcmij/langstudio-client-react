@@ -9,13 +9,19 @@ import * as selectors from '../selectors/articleList'
 class ArticleListContainer extends Component {
 
   static propTypes = {
-    articles: PropTypes.object,
+    topics: PropTypes.object,
     error: PropTypes.object,
     loading: PropTypes.bool,
-    fetchArticleList: PropTypes.func,
-    fetchArticleListCancelled: PropTypes.func,
-    match: PropTypes.object,
-    history: PropTypes.object
+    fetchArticleList: PropTypes.func.isRequired,
+    fetchArticleListCancelled: PropTypes.func.isRequired,
+    match: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired
+  }
+
+  static defaultProps = {
+    topics: null,
+    error: null,
+    loading: false
   }
 
   constructor(props) {
@@ -26,14 +32,14 @@ class ArticleListContainer extends Component {
     this.onBackClick = this.onBackClick.bind(this)
   }
 
-  get articles() {
-    const { articles } = this.props
+  get topics() {
+    const { topics } = this.props
     const { publication } = this.props.match.params
-    return articles[publication]
+    return topics[publication]
   }
 
   componentDidMount() {
-    if (!this.articles) {
+    if (!this.topics) {
       const { publication } = this.props.match.params
       this.props.fetchArticleList(publication)
     }
@@ -44,19 +50,6 @@ class ArticleListContainer extends Component {
     if (loading) {
       fetchArticleListCancelled()
     }
-  }
-
-  render() {
-    return (
-      <ArticleListPage
-        articles={this.articles}
-        error={this.props.error}
-        onRetryClick={this.onRetryClick}
-        onItemClick={this.onItemClick}
-        onSearchClick={this.onSearchClick}
-        onBackClick={this.onBackClick}
-      />
-    )
   }
 
   onRetryClick() {
@@ -76,10 +69,22 @@ class ArticleListContainer extends Component {
     this.props.history.push(`/content/${topic.publication}/${topic.chapter}`)
   }
 
+  render() {
+    return (
+      <ArticleListPage
+        topics={this.topics}
+        error={this.props.error}
+        onRetryClick={this.onRetryClick}
+        onItemClick={this.onItemClick}
+        onSearchClick={this.onSearchClick}
+        onBackClick={this.onBackClick}
+      />
+    )
+  }
 }
 
 const mapStateToProps = (state) => ({
-  articles: selectors.getArticles(state),
+  topics: selectors.getTopics(state),
   loading: selectors.getLoading(state),
   error: selectors.getError(state)
 })
