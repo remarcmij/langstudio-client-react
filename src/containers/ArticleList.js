@@ -6,7 +6,7 @@ import ArticleList from '../components/ArticleList'
 import * as actions from '../actions/articleList'
 import { getTopics, getLoading, getError } from '../reducers/articleList'
 
-class ArticleListWrapper extends React.Component {
+class ArticleListContainer extends React.Component {
 
   constructor(props) {
     super(props)
@@ -63,7 +63,7 @@ class ArticleListWrapper extends React.Component {
   }
 }
 
-ArticleListWrapper.propTypes = {
+ArticleListContainer.propTypes = {
   topics: PropTypes.array,
   loading: PropTypes.bool,
   fetchArticleTopics: PropTypes.func.isRequired,
@@ -72,7 +72,7 @@ ArticleListWrapper.propTypes = {
   match: PropTypes.object.isRequired
 }
 
-ArticleListWrapper.defaultProps = {
+ArticleListContainer.defaultProps = {
   topics: null,
   loading: false
 }
@@ -92,4 +92,4 @@ const mapDispatchToProps = (dispatch) => ({
   }
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(ArticleListWrapper)
+export default connect(mapStateToProps, mapDispatchToProps)(ArticleListContainer)

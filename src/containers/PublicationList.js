@@ -6,7 +6,7 @@ import PublicationList from '../components/PublicationList'
 import * as actions from '../actions/publicationList'
 import { getTopics, getLoading, getError } from '../reducers/publicationList'
 
-class PublicationListWrapper extends React.Component {
+class PublicationListContainer extends React.Component {
 
   constructor(props) {
     super(props)
@@ -48,7 +48,7 @@ class PublicationListWrapper extends React.Component {
   }
 }
 
-PublicationListWrapper.propTypes = {
+PublicationListContainer.propTypes = {
   topics: PropTypes.array,
   loading: PropTypes.bool,
   error: PropTypes.object,
@@ -57,7 +57,7 @@ PublicationListWrapper.propTypes = {
   history: PropTypes.object.isRequired
 }
 
-PublicationListWrapper.defaultProps = {
+PublicationListContainer.defaultProps = {
   topics: null,
   loading: false,
   error: null
@@ -78,4 +78,4 @@ const mapDispatchToProps = (dispatch) => ({
   }
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(PublicationListWrapper)
+export default connect(mapStateToProps, mapDispatchToProps)(PublicationListContainer)

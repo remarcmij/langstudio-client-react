@@ -7,7 +7,7 @@ import * as actions from '../actions/article'
 import { getArticle, getLoading, getError } from '../reducers/article'
 import speechService from '../services/speechService'
 
-class ArticleWrapper extends React.Component {
+class ArticleContainer extends React.Component {
 
   constructor(props) {
     super(props)
@@ -65,7 +65,7 @@ class ArticleWrapper extends React.Component {
   }
 }
 
-ArticleWrapper.propTypes = {
+ArticleContainer.propTypes = {
   loading: PropTypes.bool,
   fetchArticle: PropTypes.func.isRequired,
   fetchArticleCancelled: PropTypes.func.isRequired,
@@ -74,7 +74,7 @@ ArticleWrapper.propTypes = {
   match: PropTypes.object.isRequired
 }
 
-ArticleWrapper.defaultProps = {
+ArticleContainer.defaultProps = {
   loading: false
 }
 
@@ -96,4 +96,4 @@ const mapDispatchToProps = (dispatch) => ({
   }
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(ArticleWrapper)
+export default connect(mapStateToProps, mapDispatchToProps)(ArticleContainer)
