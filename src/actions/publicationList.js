@@ -11,8 +11,8 @@ export const FETCH_ERROR = PREFIX + 'FETCH_ERROR'
 export const fetchPublicationTopics = () => ({ type: FETCH })
 export const fetchPublicationTopicsCancelled = () => ({ type: FETCH_CANCELLED })
 
-const fetchFulfilled = (topics) => ({ type: FETCH_FULFILLED, topics })
-const fetchError = (error) => ({ type: FETCH_ERROR, error })
+const fetchFulfilled = (topics) => ({ type: FETCH_FULFILLED, payload: { topics } })
+const fetchError = (error) => ({ type: FETCH_ERROR, payload: { error } })
 
 export const fetchPublicationTopicsEpic = action$ =>
   action$.ofType(FETCH)

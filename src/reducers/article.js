@@ -12,9 +12,8 @@ const fetch = () => ({
   error: null
 })
 
-const fetchFulfilled = (state, action) => ({
-  ...state,
-  article: action.article,
+const fetchFulfilled = (state, payload) => ({
+  ...payload,
   loading: false,
   error: null
 })
@@ -25,10 +24,9 @@ const fetchCancelled = (state) => ({
   error: null
 })
 
-const fetchError = (state, action) => ({
-  ...state,
-  loading: false,
-  error: action.error
+const fetchError = (state, payload) => ({
+  ...payload,
+  loading: false
 })
 
 const articleCleared = () => ({
@@ -37,18 +35,18 @@ const articleCleared = () => ({
   error: null
 })
 
-export default function reducer (state = initialState, action) {
-  switch (action.type) {
+export default function reducer(state = initialState, { type, payload }) {
+  switch (type) {
     case actions.FETCH:
-      return fetch(state, action)
+      return fetch(state, payload)
     case actions.FETCH_FULFILLED:
-      return fetchFulfilled(state, action)
+      return fetchFulfilled(state, payload)
     case actions.FETCH_CANCELLED:
-      return fetchCancelled(state, action)
+      return fetchCancelled(state, payload)
     case actions.FETCH_ERROR:
-      return fetchError(state, action)
+      return fetchError(state, payload)
     case actions.CLEAR:
-      return articleCleared(state, action)
+      return articleCleared(state, payload)
     default:
       return state
   }

@@ -1,6 +1,6 @@
 import * as actions from '../actions/autoCompleteList'
 
-const intialState = {
+const initialState = {
   items: null,
   loading: false,
   error: null
@@ -12,26 +12,25 @@ const fetch = () => ({
   error: null
 })
 
-const fetchFulfilled = (state, action) => ({
-  items: action.items,
+const fetchFulfilled = (state, payload) => ({
+  ...payload,
   loading: false,
   error: null
 })
 
-const fetchError = (state, action) => ({
-  ...state,
-  loading: false,
-  error: action.error
+const fetchError = (state, payload) => ({
+  ...payload,
+  loading: false
 })
 
-export default function reducer(state = intialState, action) {
-  switch (action.type) {
+export default function reducer(state = initialState, {type, payload}) {
+  switch (type) {
     case actions.FETCH:
-      return fetch(state, action)
+      return fetch(state, payload)
     case actions.FETCH_FULFILLED:
-      return fetchFulfilled(state, action)
+      return fetchFulfilled(state, payload)
     case actions.FETCH_ERROR:
-      return fetchError(state, action)
+      return fetchError(state, payload)
     default:
       return state
   }

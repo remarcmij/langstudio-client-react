@@ -12,14 +12,24 @@ export const CLEAR = PREFIX + 'CLEAR'
 
 const cache = LRU({ max: 25, maxAge: 1000 * 60 * 60 })
 
-export const fetchArticle = (publication, chapter) => ({ type: FETCH, publication, chapter })
+export const fetchArticle = (publication, chapter) => ({ type: FETCH, payload: { publication, chapter } })
 export const fetchArticleCancelled = () => ({ type: FETCH_CANCELLED })
 export const clearArticle = () => ({ type: CLEAR })
 
+const fetchFulfilled = (article) => ({
+  type: FETCH_FULFILLED,
+  payload: { article }
+})
+
+const fetchError = (error) => ({
+  type: FETCH_ERROR,
+  payload: { error }
+})
+
 export const fetchArticleEpic = action$ =>
   action$.ofType(FETCH)
-    .switchMap(action => {
-      const { publication, chapter } = action
+    .switchMap(({ payload }) => {
+      const { publication, chapter } = payload
       const fileName = `${publication}.${chapter}.md`
       const actionOut = cache.get(fileName)
       if (actionOut) {
@@ -34,13 +44,3 @@ export const fetchArticleEpic = action$ =>
         .catch(error => Observable.of(fetchError(error)))
         .takeUntil(action$.ofType(FETCH_CANCELLED))
     })
-
-const fetchFulfilled = (article) => ({
-  type: FETCH_FULFILLED,
-  article
-})
-
-const fetchError = (error) => ({
-  type: FETCH_ERROR,
-  error
-})
