@@ -4,15 +4,14 @@ import { ListItem } from 'material-ui/List'
 import Divider from 'material-ui/Divider'
 
 function ArticleListItem({ topic, onItemClick }) {
+  const { title, subtitle } = topic
+  const secondaryText = subtitle ? (<p>{subtitle}</p>) : null
   return (
     <div>
       <ListItem
         onTouchTap={() => onItemClick(topic)}
-        primaryText={topic.title}
-        secondaryText={
-          <p>{topic.subtitle}</p>
-        }
-        secondaryTextLines={2}
+        primaryText={title}
+        secondaryText={secondaryText}
       />
       <Divider />
     </div>

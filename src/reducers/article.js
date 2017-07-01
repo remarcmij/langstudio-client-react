@@ -37,7 +37,7 @@ const articleCleared = () => ({
   error: null
 })
 
-const article = (state = initialState, action) => {
+export default function reducer (state = initialState, action) {
   switch (action.type) {
     case actions.FETCH:
       return fetch(state, action)
@@ -54,7 +54,6 @@ const article = (state = initialState, action) => {
   }
 }
 
-export default article
 export const getArticle = (state) => state.article.article
 export const getLoading = (state) => state.article.loading
 export const getError = (state) => state.article.error

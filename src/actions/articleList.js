@@ -27,7 +27,7 @@ export const fetchArticleTopicsEpic = action$ =>
   action$.ofType(FETCH)
     .switchMap(action => {
       const { publication } = action
-      const url = `${config.apiEndPoint}/topics/${publication}`
+      const url = `${config.apiEndPoint}/topics/publication/${publication}`
       return Observable.ajax({
         url,
         headers: { Authorization: `Bearer ${config.token}` }

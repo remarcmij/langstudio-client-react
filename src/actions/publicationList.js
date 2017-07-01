@@ -17,7 +17,7 @@ const fetchError = (error) => ({ type: FETCH_ERROR, error })
 export const fetchPublicationTopicsEpic = action$ =>
   action$.ofType(FETCH)
     .switchMap(() => {
-      const url = `${config.apiEndPoint}/topics`
+      const url = `${config.apiEndPoint}/topics/index`
       return Observable.ajax({
         url,
         headers: { Authorization: `Bearer ${config.token}` }
